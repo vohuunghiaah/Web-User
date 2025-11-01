@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Page</title>
     <link rel="stylesheet" href="user.css" />
-    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css"
@@ -30,17 +29,19 @@
             <i class="ri-search-line"></i>
           </button>
         </div>
-        <nav>
-          <a href="#" data-action="open-modal" data-target="login-modal">
-            👤 Đăng nhập
-          </a>
-          <a href="#" data-action="open-modal" data-target="signup-modal">
-            ➕ Đăng ký
-          </a>
-          <a href="#" data-action="open-modal" data-target="cart-modal">
-            🛒 Giỏ hàng
-          </a>
-        </nav>
+        <nav id="main-nav">
+  <span id="user-info" style="display: none; color: white;">👋 Xin chào, <strong id="username-display"></strong></span>
+
+  <a href="#" data-action="open-modal" data-target="login-modal" id="login-link">👤 Đăng nhập</a>
+  <a href="#" data-action="open-modal" data-target="signup-modal" id="signup-link">➕ Đăng ký</a>
+
+  <a href="#" id="cart-link" data-action="open-modal" data-target="cart-modal">
+    🛒 Giỏ hàng
+  </a>
+
+  <a href="#" id="logout-link" style="display: none;">🚪 Đăng xuất</a>
+</nav>
+
       </div>
       <div class="header__bottom">
         <nav class="header__bottom__nav">
@@ -427,10 +428,44 @@
       </section>
 
       <section id="view-contact" class="spa-view">
-        <div class="content-box">
-          <h2>Liên hệ với chúng tôi</h2>
-          <p>Form liên hệ và địa chỉ.</p>
-        </div>
+        
+         <section class="contact-section">
+  <h2>Liên hệ với chúng tôi</h2>
+  <p>Hãy để lại thông tin, chúng tôi sẽ phản hồi sớm nhất!</p>
+
+  <div class="contact-container">
+    <!-- Form liên hệ -->
+    <form class="contact-form">
+      <div class="form-group">
+        <label for="name">Họ và tên</label>
+        <input type="text" id="name" placeholder="Nhập họ tên của bạn" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Nhập email của bạn" required />
+      </div>
+
+      <div class="form-group">
+        <label for="message">Nội dung</label>
+        <textarea id="message" rows="5" placeholder="Viết tin nhắn tại đây..." required></textarea>
+      </div>
+
+      <button type="submit" class="btn-send">Gửi liên hệ</button>
+    </form>
+
+    <!-- Bản đồ -->
+    <div class="contact-map">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.480229377548!2d106.70042381533447!3d10.776889992322634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f3a0a0f9d77%3A0xbcb8ff2f7cf3c6b!2zQ2jhu6MgVmnhu4duLCBI4buTbmcgU8ahbiwgSOG7kyBDaMOtIE1pbmggQ2l0eQ!5e0!3m2!1svi!2s!4v1684567890123!5m2!1svi!2s"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
       </section>
 
       <!-- View Chi tiết sản phẩm -->
@@ -503,49 +538,213 @@
         </main>
       </section>
 
-      <section id="view-cat-mouse" class="spa-view" >
-        <div class="content-box">
-          <h2>Danh mục: Chuột</h2>
-          <p>Các sản phẩm chuột mới nhất.</p>
-        </div>
-      </section>
-
-      <section id="view-cat-keyboard" class="spa-view">
-        <div class="content-box">
-          <h2>Danh mục: Bàn phím</h2>
-          <p>Các sản phẩm bàn phím cơ và thường.</p>
-        </div>
-      </section>
-
-      <section id="view-cat-headphone" class="spa-view">
-        <div class="content-box">
-          <h2>Danh mục: Tai nghe</h2>
-          <p>Các sản phẩm tai nghe chất lượng cao.</p>
-        </div>
-      </section>
-
-      <section id="view-cat-powerbank" class="spa-view">
-        <div class="content-box">
-          <h2>Danh mục: Sạc dự phòng</h2>
-          <p>Các sản phẩm sạc dự phòng tiện lợi.</p>
-        </div>
-      </section>
+      
     </div>
 
   <div id="modal-container" class="modal-container">
       <div class="modal-overlay" data-action="close-modal"></div>
-
+<!-- //login -->
       <div id="login-modal" class="modal-content">
         <button class="close-btn" data-action="close-modal">&times;</button>
-        <h2>Đăng nhập</h2>
-        <p>Form đăng nhập của bạn đặt ở đây.</p>
+    
+    <div class="modal-header">
+      <h2>Đăng nhập</h2>
+    </div>
+    
+    <form id="login-form" class="auth-form">
+      <div class="form-group">
+        <label for="login-email">
+          <i class="ri-mail-line"></i>
+          Email
+        </label>
+        <input 
+          type="email" 
+          id="login-email" 
+          name="email" 
+          required 
+          placeholder="Nhập email của bạn"
+        />
+      </div>
+      
+      <div class="form-group">
+        <label for="login-password">
+          <i class="ri-lock-line"></i>
+          Mật khẩu
+        </label>
+        <input 
+          type="password" 
+          id="login-password" 
+          name="password" 
+          required 
+          placeholder="Nhập mật khẩu"
+        />
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-block">
+          Đăng nhập
+        </button>
+      </div>
+      
+      <div class="form-footer">
+        <p>
+          Chưa có tài khoản? 
+          <a href="#" data-action="switch-to-signup">Đăng ký ngay</a>
+        </p>
+        <p class="demo-info">
+          <strong>Tài khoản demo:</strong><br>
+          Email: user@xtray.com | Mật khẩu: user123
+        </p>
+      </div>
+    </form>
       </div>
 
       <div id="signup-modal" class="modal-content">
         <button class="close-btn" data-action="close-modal">&times;</button>
-        <h2>Đăng ký</h2>
-        <p>Form đăng ký của bạn đặt ở đây.</p>
+        <div class="modal-header">
+    <h2>Đăng ký</h2>
+  </div>
+
+  <form id="signup-form" class="auth-form">
+    <!-- Họ tên -->
+    <div class="form-group">
+      <label for="signup-name">
+        <i class="ri-user-line"></i>
+        Họ và tên
+      </label>
+      <input 
+        type="text" 
+        id="signup-name" 
+        name="name" 
+        required 
+        placeholder="Nhập họ và tên của bạn"
+      />
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label for="signup-email">
+        <i class="ri-mail-line"></i>
+        Email
+      </label>
+      <input 
+        type="email" 
+        id="signup-email" 
+        name="email" 
+        required 
+        placeholder="Nhập email của bạn"
+      />
+    </div>
+
+    <!-- Mật khẩu -->
+    <div class="form-group">
+      <label for="signup-password">
+        <i class="ri-lock-line"></i>
+        Mật khẩu
+      </label>
+      <input 
+        type="password" 
+        id="signup-password" 
+        name="password" 
+        required 
+        placeholder="Tạo mật khẩu"
+      />
+    </div>
+
+    <!-- Xác nhận mật khẩu -->
+    <div class="form-group">
+      <label for="signup-confirm">
+        <i class="ri-lock-password-line"></i>
+        Xác nhận mật khẩu
+      </label>
+      <input 
+        type="password" 
+        id="signup-confirm" 
+        name="confirm_password" 
+        required 
+        placeholder="Nhập lại mật khẩu"
+      />
+    </div>
+
+    <!-- Nút đăng ký -->
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary btn-block">
+        Đăng ký
+      </button>
+    </div>
+
+    <!-- Chân form -->
+    <div class="form-footer">
+      <p>
+        Đã có tài khoản? 
+        <a href="#" data-action="switch-to-login">Đăng nhập ngay</a>
+      </p>
+    </div>
+  </form>
       </div>
+
+<!-- quan ly tai khoan -->
+<!-- ========== MODAL THÔNG TIN CÁ NHÂN ========== -->
+<div id="profile-modal" class="modal-content">
+  <div class="modal-header">
+    <h2>Thông tin cá nhân</h2>
+  </div>
+
+  <form id="profile-form" class="auth-form">
+    <div class="form-group">
+      <label for="profile-name">
+        <i class="ri-user-line"></i>
+        Họ và tên
+      </label>
+      <input 
+        type="text" 
+        id="profile-name" 
+        name="name" 
+        required 
+        placeholder="Nhập tên của bạn"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="profile-email">
+        <i class="ri-mail-line"></i>
+        Email (không thể thay đổi)
+      </label>
+      <input 
+        type="email" 
+        id="profile-email" 
+        name="email" 
+        readonly 
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="profile-password">
+        <i class="ri-lock-line"></i>
+        Mật khẩu mới (tùy chọn)
+      </label>
+      <input 
+        type="password" 
+        id="profile-password" 
+        name="password" 
+        placeholder="Nhập mật khẩu mới nếu muốn đổi"
+      />
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary btn-block">
+        Lưu thay đổi
+      </button>
+    </div>
+  </form>
+
+  <div class="form-footer">
+    <button class="btn btn-secondary" data-action="close-modal">Đóng</button>
+  </div>
+</div>
+
+
+
 
       <div id="cart-modal" class="modal-content">
         <button class="close-btn" data-action="close-modal">&times;</button>
