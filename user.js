@@ -297,10 +297,11 @@ function renderCart() {
   // Use DocumentFragment for better performance
   const fragment = document.createDocumentFragment();
   
-  cart.forEach((item, index) => {
+  cart.forEach((item) => {
     const div = document.createElement("div");
     div.classList.add("item");
-    div.dataset.index = index;
+    // Use item name as identifier instead of index to avoid stale index issues
+    div.dataset.itemName = item.name;
     div.innerHTML = `
             <img src="${item.image}" alt="${item.name}">
             <div>
@@ -343,19 +344,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const itemDiv = button.closest(".item");
       if (!itemDiv) return;
       
-      const index = parseInt(itemDiv.dataset.index);
-      if (isNaN(index) || index < 0 || index >= cart.length) return;
+      // Find item by name instead of index to avoid stale data
+      const itemName = itemDiv.dataset.itemName;
+      const itemIndex = cart.findIndex(item => item.name === itemName);
+      
+      if (itemIndex === -1) return; // Item not found in cart
       
       const action = button.dataset.action;
-      const item = cart[index];
+      const item = cart[itemIndex];
       
       if (action === "remove") {
-        cart.splice(index, 1);
+        cart.splice(itemIndex, 1);
       } else if (action === "increase") {
         item.quantity++;
       } else if (action === "decrease") {
         item.quantity--;
-        if (item.quantity <= 0) cart.splice(index, 1);
+        if (item.quantity <= 0) cart.splice(itemIndex, 1);
       }
       
       localStorage.setItem("cart", JSON.stringify(cart));
@@ -380,11 +384,12 @@ function renderCheckout() {
   // Use DocumentFragment for better performance
   const fragment = document.createDocumentFragment();
 
-  cart.forEach((item, index) => {
+  cart.forEach((item) => {
     subtotal += item.price * item.quantity;
     const div = document.createElement("div");
     div.classList.add("product-item");
-    div.dataset.index = index;
+    // Use item name as identifier instead of index
+    div.dataset.itemName = item.name;
     div.innerHTML = `
             <img src="${item.image}" alt="${item.name}">
             <div>
@@ -414,10 +419,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const itemDiv = button.closest(".product-item");
       if (!itemDiv) return;
       
-      const index = parseInt(itemDiv.dataset.index);
-      if (isNaN(index) || index < 0 || index >= cart.length) return;
+      // Find item by name instead of index
+      const itemName = itemDiv.dataset.itemName;
+      const itemIndex = cart.findIndex(item => item.name === itemName);
       
-      cart.splice(index, 1);
+      if (itemIndex === -1) return; // Item not found
+      
+      cart.splice(itemIndex, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
       updateCartUI();
     });
