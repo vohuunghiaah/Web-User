@@ -909,12 +909,17 @@
         </div>
       </div>
     </footer>
-    <script src="products.js"></script>
-    <script src="user.js"></script>
     <!-- Popup xác nhận thêm giỏ hàng -->
     <div id="cart-success" class="cart-success" aria-live="polite" role="status">
       <i class="ri-check-line"></i>
       <span>Đã thêm vào giỏ hàng!</span>
     </div>
   </body>
+  <script src="products.js"></script>
+  <script src="user.js"></script>
+  <script>
+    if(window.location.pathname.startsWith("/admin")){
+      window.location.href = "admin.html";
+    }
+  </script>
 </html>
