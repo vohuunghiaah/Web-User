@@ -2436,6 +2436,20 @@ window.showView = function (viewId) {
 
 // Đợi DOM load xong
 document.addEventListener("DOMContentLoaded", function () {
+  // -1. Utility functions for performance -
+  // Debounce function to limit how often a function can be called
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
   // -2. Cài đặt và trạng thái -
   const productsPerPage = 12;
   let currentPage = 1;
@@ -2577,27 +2591,12 @@ document.addEventListener("DOMContentLoaded", function () {
         ? (priceDiscountTextSpan.textContent = product.priceDiscountText)
         : (priceDiscountTextSpan.style.display = "none");
 
-      // Gắn sự kiện "Thêm vào giỏ" cho mỗi item render
+      // Store product data in data attributes for event delegation
       const cartBtn = clone.querySelector(".products__list__item--img__cart");
       if (cartBtn) {
-        cartBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          try {
-            const productName = product.name;
-            const priceText = product.currentPrice;
-            const price =
-              parseInt(String(priceText).replace(/[^\d]/g, "")) || 0;
-            const image = product.imgSrc;
-            if (typeof addToCart === "function") {
-              addToCart(productName, price, image, 1);
-            } else {
-              console.error("Hàm addToCart không tồn tại");
-            }
-          } catch (err) {
-            console.error("Lỗi thêm vào giỏ:", err);
-          }
-        });
+        cartBtn.dataset.productName = product.name;
+        cartBtn.dataset.productPrice = product.currentPrice;
+        cartBtn.dataset.productImage = product.imgSrc;
       }
 
       productsList.appendChild(clone);
@@ -2791,25 +2790,36 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
   filterProductsFromActiveCategories();
-  // Sự kiện cho các checkbox Mức giá
+  // Sự kiện cho các checkbox Mức giá (optimized to avoid nested loops)
   priceCheckboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
-      currentPriceFilters = []; // Xây dựng lại mảng filter
-      priceCheckboxes.forEach((box) => {
-        if (box.checked) {
-          currentPriceFilters.push(box.value);
-        }
-      });
-
       // Logic cho checkbox "Tất cả"
-      if (currentPriceFilters.includes("all")) {
-        currentPriceFilters = ["all"]; // Chỉ giữ lại 'all'
+      if (checkbox.value === "all" && checkbox.checked) {
+        currentPriceFilters = ["all"];
         priceCheckboxes.forEach((box) => {
           if (box.value !== "all") box.checked = false;
         });
-      } else {
+      } else if (checkbox.value !== "all" && checkbox.checked) {
         // Nếu chọn mục khác, bỏ check 'Tất cả'
-        document.getElementById("all").checked = false;
+        const allCheckbox = document.getElementById("all");
+        if (allCheckbox) allCheckbox.checked = false;
+        // Build the filter array only from checked boxes
+        currentPriceFilters = Array.from(priceCheckboxes)
+          .filter(box => box.checked && box.value !== "all")
+          .map(box => box.value);
+      } else {
+        // Unchecked a box - rebuild filter array
+        currentPriceFilters = Array.from(priceCheckboxes)
+          .filter(box => box.checked && box.value !== "all")
+          .map(box => box.value);
+        // If no filters, check "all"
+        if (currentPriceFilters.length === 0) {
+          const allCheckbox = document.getElementById("all");
+          if (allCheckbox) {
+            allCheckbox.checked = true;
+            currentPriceFilters = ["all"];
+          }
+        }
       }
 
       currentPage = 1; // Reset về trang 1
@@ -2925,11 +2935,21 @@ document.addEventListener("DOMContentLoaded", function () {
     scrollToTop();
   }
 
+  // Create debounced version for live search
+  const debouncedSearch = debounce(() => {
+    const query = searchInput ? searchInput.value.trim() : "";
+    if (query !== "") {
+      currentSearchQuery = query;
+      currentPage = 1;
+      filterProductsFromActiveCategories();
+    }
+  }, 300);
+
   // Event listener cho nút search
   if (searchBtn) {
     searchBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      handleSearch();
+      handleSearch(); // Immediate search on button click
     });
   }
 
@@ -2938,9 +2958,12 @@ document.addEventListener("DOMContentLoaded", function () {
     searchInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        handleSearch();
+        handleSearch(); // Immediate search on Enter
       }
     });
+    
+    // Add input event with debounce for live search
+    searchInput.addEventListener("input", debouncedSearch);
   }
 
   document.addEventListener("click", (e) => {
@@ -3077,6 +3100,33 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+
+  // ================= Event delegation for product list cart buttons =================
+  if (productsList && !productsList.dataset.cartDelegationAttached) {
+    productsList.dataset.cartDelegationAttached = "true";
+    productsList.addEventListener("click", (e) => {
+      const cartBtn = e.target.closest(".products__list__item--img__cart");
+      if (!cartBtn) return;
+      
+      e.preventDefault();
+      e.stopPropagation();
+      
+      try {
+        const productName = cartBtn.dataset.productName;
+        const priceText = cartBtn.dataset.productPrice;
+        const image = cartBtn.dataset.productImage;
+        const price = parseInt(String(priceText).replace(/[^\d]/g, "")) || 0;
+        
+        if (typeof addToCart === "function") {
+          addToCart(productName, price, image, 1);
+        } else {
+          console.error("Hàm addToCart không tồn tại");
+        }
+      } catch (err) {
+        console.error("Lỗi thêm vào giỏ:", err);
+      }
+    });
+  }
 
   // 5. Hiển thị trang chủ khi tải lần đầu
   showView("view-home");
