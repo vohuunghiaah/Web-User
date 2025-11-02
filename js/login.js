@@ -1,17 +1,17 @@
 import { admin as initialAccount } from "./data/account.js";
 
-const getData = (key) => JSON.parse(localStorage.getItem(key));
-const setData = (key, val) => localStorage.setItem(key, JSON.stringify(val));
+const getLocalStorageData = (key) => JSON.parse(localStorage.getItem(key));
+const setLocalStorageData = (key, value) => localStorage.setItem(key, JSON.stringify(value));
 
-let adminList = getData("admin") || [];
+let adminUsersList = getLocalStorageData("admin") || [];
 
 // Kiểm tra xem admin đã tồn tại trong mảng chưa
-const adminExists = adminList.some((user) => user.role === "admin");
+const adminAccountExists = adminUsersList.some((user) => user.role === "admin");
 
 // Nếu admin CHƯA tồn tại
-if (!adminExists) {
+if (!adminAccountExists) {
   // Lưu lại vào localStorage
-  setData("admin", initialAccount);
+  setLocalStorageData("admin", initialAccount);
   console.log("Đã tự động thêm tài khoản admin vào localStorage (key: admin).");
 }
 
@@ -19,32 +19,32 @@ if (!adminExists) {
 function handleLogin(event) {
   event.preventDefault();
 
-  const usernameInput = document.getElementById("username").value;
-  const passwordInput = document.getElementById("password").value;
-  const errorMessage = document.getElementById("error-message");
+  const enteredUsername = document.getElementById("username").value;
+  const enteredPassword = document.getElementById("password").value;
+  const errorMessageElement = document.getElementById("error-message");
 
   // Lấy admin từ localStorage (key: 'admin')
-  const admin = getData("admin") || [];
+  const adminAccountsList = getLocalStorageData("admin") || [];
 
   // Tìm user
-  const foundAdmin = admin.find(
-    (admin) => admin.name === usernameInput && admin.password === passwordInput
+  const authenticatedAdmin = adminAccountsList.find(
+    (adminAccount) => adminAccount.name === enteredUsername && adminAccount.password === enteredPassword
   );
 
-  if (foundAdmin) {
+  if (authenticatedAdmin) {
     // Đăng nhập thành công
-    errorMessage.style.display = "none"; // Ẩn thông báo lỗi
+    errorMessageElement.style.display = "none"; // Ẩn thông báo lỗi
 
     // Lưu 'currentAdmin'
-    setData("currentAdmin", foundAdmin);
+    setLocalStorageData("currentAdmin", authenticatedAdmin);
 
     //Kiểm tra vai trò VÀ chuyển hướng
-    if (foundAdmin.role === "admin") {
+    if (authenticatedAdmin.role === "admin") {
       window.location.href = "./index.html"; // Chuyển đến trang admin
     }
   } else {
     // Đăng nhập thất bại
-    errorMessage.style.display = "block";
+    errorMessageElement.style.display = "block";
   }
 }
 

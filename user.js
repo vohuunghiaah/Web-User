@@ -6,29 +6,29 @@
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 // Gắn sự kiện click động cho các nút "Thêm vào giỏ" (cả danh sách và phần hot)
-document.addEventListener("click", function (e) {
-  const cartBtn = e.target.closest(
+document.addEventListener("click", function (clickEvent) {
+  const addToCartButton = clickEvent.target.closest(
     ".products__list__item--img__cart, .product-hottest-item--img__cart"
   );
-  if (!cartBtn) return;
-  e.preventDefault();
-  e.stopPropagation();
+  if (!addToCartButton) return;
+  clickEvent.preventDefault();
+  clickEvent.stopPropagation();
 
   // Tìm phần tử sản phẩm gần nhất và lấy dữ liệu hiển thị
-  const item = cartBtn.closest(".products__list__item, .product-hottest-item");
-  if (!item) return;
-  const nameEl = item.querySelector(
+  const productItem = addToCartButton.closest(".products__list__item, .product-hottest-item");
+  if (!productItem) return;
+  const productNameElement = productItem.querySelector(
     ".products__list__item--name, .product-hottest-item--name"
   );
-  const priceEl = item.querySelector(
+  const productPriceElement = productItem.querySelector(
     ".products__list__item--price, .product-hottest-item--price"
   );
-  const imgEl = item.querySelector("img");
-  if (!nameEl || !priceEl || !imgEl) return;
-  const name = nameEl.textContent.trim();
-  const price = parseInt(priceEl.textContent.replace(/[^\d]/g, "")) || 0;
-  const image = imgEl.src;
-  addToCart(name, price, image, 1);
+  const productImageElement = productItem.querySelector("img");
+  if (!productNameElement || !productPriceElement || !productImageElement) return;
+  const productName = productNameElement.textContent.trim();
+  const productPrice = parseInt(productPriceElement.textContent.replace(/[^\d]/g, "")) || 0;
+  const productImageSrc = productImageElement.src;
+  addToCart(productName, productPrice, productImageSrc, 1);
 });
 
 // Để bạn có thể lấy dữ liệu giỏ hàng
@@ -245,11 +245,11 @@ function showAddToCartSuccess(name) {
 
 // ================= Thêm sản phẩm vào giỏ =================
 function addToCart(name, price, image, quantity = 1) {
-  const qty =
+  const validatedQuantity =
     Number.isFinite(quantity) && quantity > 0 ? Math.floor(quantity) : 1;
-  const existing = cart.find((p) => p.name === name);
-  if (existing) existing.quantity += qty;
-  else cart.push({ name, price, image, quantity: qty });
+  const existingCartItem = cart.find((cartProduct) => cartProduct.name === name);
+  if (existingCartItem) existingCartItem.quantity += validatedQuantity;
+  else cart.push({ name, price, image, quantity: validatedQuantity });
   localStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
   renderCheckout();
@@ -258,50 +258,50 @@ function addToCart(name, price, image, quantity = 1) {
 
 // ================= Render giỏ hàng =================
 function renderCart() {
-  const container = document.querySelector(".cart-items");
-  const emptyMsg = document.querySelector(".cart-empty");
-  container.innerHTML = "";
+  const cartItemsContainer = document.querySelector(".cart-items");
+  const emptyCartMessage = document.querySelector(".cart-empty");
+  cartItemsContainer.innerHTML = "";
 
   if (cart.length === 0) {
-    emptyMsg.style.display = "block";
+    emptyCartMessage.style.display = "block";
     return;
   }
-  emptyMsg.style.display = "none";
+  emptyCartMessage.style.display = "none";
 
-  cart.forEach((item, index) => {
-    const div = document.createElement("div");
-    div.classList.add("item");
-    div.innerHTML = `
-            <img src="${item.image}" alt="${item.name}">
+  cart.forEach((cartItem, cartItemIndex) => {
+    const cartItemElement = document.createElement("div");
+    cartItemElement.classList.add("item");
+    cartItemElement.innerHTML = `
+            <img src="${cartItem.image}" alt="${cartItem.name}">
             <div>
-                <p>${item.name}</p>
-                <p>${item.price} đ x <span class="qty">${item.quantity}</span></p>
+                <p>${cartItem.name}</p>
+                <p>${cartItem.price} đ x <span class="qty">${cartItem.quantity}</span></p>
                 <div class="quantity-controls">
                     <button class="decrease">-</button>
                     <button class="increase">+</button>
                 </div>
                 <button class="remove-btn">Xóa</button>
             </div>`;
-    container.appendChild(div);
+    cartItemsContainer.appendChild(cartItemElement);
 
     // Nút xóa
-    div.querySelector(".remove-btn").addEventListener("click", () => {
-      cart.splice(index, 1);
+    cartItemElement.querySelector(".remove-btn").addEventListener("click", () => {
+      cart.splice(cartItemIndex, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
       renderCart();
       renderCheckout();
     });
 
     // Nút tăng giảm
-    div.querySelector(".increase").addEventListener("click", () => {
-      item.quantity++;
+    cartItemElement.querySelector(".increase").addEventListener("click", () => {
+      cartItem.quantity++;
       localStorage.setItem("cart", JSON.stringify(cart));
       renderCart();
       renderCheckout();
     });
-    div.querySelector(".decrease").addEventListener("click", () => {
-      item.quantity--;
-      if (item.quantity <= 0) cart.splice(index, 1);
+    cartItemElement.querySelector(".decrease").addEventListener("click", () => {
+      cartItem.quantity--;
+      if (cartItem.quantity <= 0) cart.splice(cartItemIndex, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
       renderCart();
       renderCheckout();
@@ -309,9 +309,9 @@ function renderCart() {
   });
 
   // Nút quay lại chỉ tạo 1 lần
-  const backBtn = document.getElementById("back-to-shop");
-  if (backBtn) {
-    backBtn.addEventListener("click", () => {
+  const backToShopButton = document.getElementById("back-to-shop");
+  if (backToShopButton) {
+    backToShopButton.addEventListener("click", () => {
       // Điều hướng về trang sản phẩm trong SPA và đóng modal giỏ hàng
       if (typeof showView === "function") showView("view-products");
       if (window.router && typeof window.router.closeModal === "function") {
@@ -323,37 +323,37 @@ function renderCart() {
 
 // ================= Render checkout =================
 function renderCheckout() {
-  const summary = document.querySelector(".cart-items-summary");
-  const subtotalEl = document.querySelector(".subtotal");
-  const shippingEl = document.querySelector(".shipping");
-  const totalEl = document.querySelector(".total");
-  summary.innerHTML = "";
-  let subtotal = 0;
+  const checkoutSummaryContainer = document.querySelector(".cart-items-summary");
+  const subtotalElement = document.querySelector(".subtotal");
+  const shippingElement = document.querySelector(".shipping");
+  const totalElement = document.querySelector(".total");
+  checkoutSummaryContainer.innerHTML = "";
+  let subtotalAmount = 0;
 
-  cart.forEach((item, index) => {
-    subtotal += item.price * item.quantity;
-    const div = document.createElement("div");
-    div.classList.add("product-item");
-    div.innerHTML = `
-            <img src="${item.image}" alt="${item.name}">
+  cart.forEach((cartItem, cartItemIndex) => {
+    subtotalAmount += cartItem.price * cartItem.quantity;
+    const productItemElement = document.createElement("div");
+    productItemElement.classList.add("product-item");
+    productItemElement.innerHTML = `
+            <img src="${cartItem.image}" alt="${cartItem.name}">
             <div>
-                <p><strong>${item.name}</strong></p>
-                <p>${item.price} đ x ${item.quantity}</p>
+                <p><strong>${cartItem.name}</strong></p>
+                <p>${cartItem.price} đ x ${cartItem.quantity}</p>
                 <button class="remove-btn">Xóa</button>
             </div>`;
-    summary.appendChild(div);
+    checkoutSummaryContainer.appendChild(productItemElement);
 
-    div.querySelector(".remove-btn").addEventListener("click", () => {
-      cart.splice(index, 1);
+    productItemElement.querySelector(".remove-btn").addEventListener("click", () => {
+      cart.splice(cartItemIndex, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
       renderCart();
       renderCheckout();
     });
   });
 
-  subtotalEl.innerText = subtotal + " đ";
-  shippingEl.innerText = shippingFee + " đ";
-  totalEl.innerHTML = `<strong>Tổng cộng:</strong> ${subtotal + shippingFee} đ`;
+  subtotalElement.innerText = subtotalAmount + " đ";
+  shippingElement.innerText = shippingFee + " đ";
+  totalElement.innerHTML = `<strong>Tổng cộng:</strong> ${subtotalAmount + shippingFee} đ`;
 }
 
 // ================= Hiển thị form chuyển khoản =================
@@ -372,48 +372,48 @@ function checkoutOrder() {
   }
 
   // Lấy thông tin giao hàng
-  const form = document.querySelector(".checkout-form");
-  const name = form.querySelector('input[placeholder="Họ và tên"]').value;
-  const email = form.querySelector('input[type="email"]').value;
-  const phone = form.querySelector('input[type="tel"]').value;
-  const address = form.querySelector('input[placeholder="Địa chỉ"]').value;
-  const ward = form.querySelector('input[placeholder="Phường/Xã"]').value;
-  const district = form.querySelector('input[placeholder="Quận/Huyện"]').value;
-  const city = form.querySelector('input[placeholder="Tỉnh/Thành phố"]').value;
-  const payMethod = form.querySelector('input[name="pay"]:checked').value;
+  const checkoutForm = document.querySelector(".checkout-form");
+  const customerName = checkoutForm.querySelector('input[placeholder="Họ và tên"]').value;
+  const customerEmail = checkoutForm.querySelector('input[type="email"]').value;
+  const customerPhone = checkoutForm.querySelector('input[type="tel"]').value;
+  const customerAddress = checkoutForm.querySelector('input[placeholder="Địa chỉ"]').value;
+  const customerWard = checkoutForm.querySelector('input[placeholder="Phường/Xã"]').value;
+  const customerDistrict = checkoutForm.querySelector('input[placeholder="Quận/Huyện"]').value;
+  const customerCity = checkoutForm.querySelector('input[placeholder="Tỉnh/Thành phố"]').value;
+  const selectedPaymentMethod = checkoutForm.querySelector('input[name="pay"]:checked').value;
 
   // Tính tổng
-  let total =
-    cart.reduce((sum, p) => sum + p.price * p.quantity, 0) + shippingFee;
+  let orderTotal =
+    cart.reduce((sum, cartProduct) => sum + cartProduct.price * cartProduct.quantity, 0) + shippingFee;
 
   // Lưu đơn hàng
-  const order = {
+  const newOrder = {
     date: new Date().toLocaleString(),
     products: [...cart],
-    total,
-    payMethod,
-    address: { name, email, phone, address, ward, district, city },
+    total: orderTotal,
+    payMethod: selectedPaymentMethod,
+    address: { name: customerName, email: customerEmail, phone: customerPhone, address: customerAddress, ward: customerWard, district: customerDistrict, city: customerCity },
   };
-  orders.push(order);
+  orders.push(newOrder);
   localStorage.setItem("orders", JSON.stringify(orders));
 
   // Hiển thị hóa đơn
-  const billProducts = document.querySelector(".bill-products");
-  const billTotal = document.querySelector(".bill-total");
-  const billPay = document.querySelector(".bill-pay");
-  const dateEl = document.getElementById("date");
+  const billProductsElement = document.querySelector(".bill-products");
+  const billTotalElement = document.querySelector(".bill-total");
+  const billPaymentMethodElement = document.querySelector(".bill-pay");
+  const billDateElement = document.getElementById("date");
 
-  billProducts.innerHTML = "";
-  order.products.forEach((item) => {
-    const p = document.createElement("p");
-    p.innerHTML = `<strong>${item.name}</strong> x ${item.quantity} - ${
-      item.price * item.quantity
+  billProductsElement.innerHTML = "";
+  newOrder.products.forEach((orderProduct) => {
+    const productLineElement = document.createElement("p");
+    productLineElement.innerHTML = `<strong>${orderProduct.name}</strong> x ${orderProduct.quantity} - ${
+      orderProduct.price * orderProduct.quantity
     } đ`;
-    billProducts.appendChild(p);
+    billProductsElement.appendChild(productLineElement);
   });
-  billTotal.innerText = total + " đ";
-  billPay.innerText = payMethod.toUpperCase();
-  dateEl.innerText = order.date;
+  billTotalElement.innerText = orderTotal + " đ";
+  billPaymentMethodElement.innerText = selectedPaymentMethod.toUpperCase();
+  billDateElement.innerText = newOrder.date;
 
   // Xóa giỏ hàng
   cart = [];
@@ -425,15 +425,15 @@ function checkoutOrder() {
 
 // ================= Hiển thị lịch sử đơn hàng =================
 function renderOrderHistory() {
-  const tbody = document.getElementById("order-history");
-  tbody.innerHTML = "";
-  orders.forEach((order) => {
-    order.products.forEach((item) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${item.name}</td><td>${
-        item.price * item.quantity
+  const orderHistoryTableBody = document.getElementById("order-history");
+  orderHistoryTableBody.innerHTML = "";
+  orders.forEach((customerOrder) => {
+    customerOrder.products.forEach((orderedProduct) => {
+      const orderRowElement = document.createElement("tr");
+      orderRowElement.innerHTML = `<td>${orderedProduct.name}</td><td>${
+        orderedProduct.price * orderedProduct.quantity
       } đ</td><td>Đã mua</td>`;
-      tbody.appendChild(tr);
+      orderHistoryTableBody.appendChild(orderRowElement);
     });
   });
 }
@@ -463,9 +463,9 @@ function setupAuthFormToggle() {
   // Login → Signup
   document
     .querySelectorAll('[data-action="switch-to-signup"]')
-    .forEach((link) => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
+    .forEach((switchLink) => {
+      switchLink.addEventListener("click", (clickEvent) => {
+        clickEvent.preventDefault();
         loginModal.classList.remove("active");
         setTimeout(() => signupModal.classList.add("active"), 150);
       });
@@ -474,9 +474,9 @@ function setupAuthFormToggle() {
   // Signup → Login
   document
     .querySelectorAll('[data-action="switch-to-login"]')
-    .forEach((link) => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
+    .forEach((switchLink) => {
+      switchLink.addEventListener("click", (clickEvent) => {
+        clickEvent.preventDefault();
         signupModal.classList.remove("active");
         setTimeout(() => loginModal.classList.add("active"), 150);
       });
@@ -485,30 +485,30 @@ function setupAuthFormToggle() {
 
 // Xử lý đăng ký tài khoản
 function setupRegisterForm() {
-  const form = document.getElementById("signup-form");
-  if (!form) return;
+  const registerForm = document.getElementById("signup-form");
+  if (!registerForm) return;
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+  registerForm.addEventListener("submit", (submitEvent) => {
+    submitEvent.preventDefault();
 
-    const name = form.querySelector("#signup-name").value.trim();
-    const email = form.querySelector("#signup-email").value.trim();
-    const password = form.querySelector("#signup-password").value.trim();
-    const confirm = form.querySelector("#signup-confirm-password").value.trim();
+    const userName = registerForm.querySelector("#signup-name").value.trim();
+    const userEmail = registerForm.querySelector("#signup-email").value.trim();
+    const userPassword = registerForm.querySelector("#signup-password").value.trim();
+    const confirmedPassword = registerForm.querySelector("#signup-confirm-password").value.trim();
 
-    if (!name || !email || !password)
+    if (!userName || !userEmail || !userPassword)
       return alert("Vui lòng nhập đầy đủ thông tin!");
-    if (password !== confirm) return alert("Mật khẩu nhập lại không khớp!");
+    if (userPassword !== confirmedPassword) return alert("Mật khẩu nhập lại không khớp!");
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    if (users.some((u) => u.email === email))
+    let registeredUsers = JSON.parse(localStorage.getItem("users")) || [];
+    if (registeredUsers.some((existingUser) => existingUser.email === userEmail))
       return alert("Email này đã được đăng ký!");
 
-    users.push({ name, email, password });
-    localStorage.setItem("users", JSON.stringify(users));
+    registeredUsers.push({ name: userName, email: userEmail, password: userPassword });
+    localStorage.setItem("users", JSON.stringify(registeredUsers));
     alert("Đăng ký thành công! Vui lòng đăng nhập.");
 
-    form.reset();
+    registerForm.reset();
     // Chuyển về login form
     document.getElementById("signup-modal").classList.remove("active");
     setTimeout(
@@ -520,21 +520,21 @@ function setupRegisterForm() {
 
 // Xử lý đăng nhập
 function setupLoginForm() {
-  const form = document.getElementById("login-form");
-  if (!form) return;
+  const loginForm = document.getElementById("login-form");
+  if (!loginForm) return;
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+  loginForm.addEventListener("submit", (submitEvent) => {
+    submitEvent.preventDefault();
 
-    const email = form.querySelector("#login-email").value.trim();
-    const password = form.querySelector("#login-password").value.trim();
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const enteredEmail = loginForm.querySelector("#login-email").value.trim();
+    const enteredPassword = loginForm.querySelector("#login-password").value.trim();
+    const registeredUsers = JSON.parse(localStorage.getItem("users")) || [];
 
     // Hỗ trợ tài khoản demo
-    if (email === "user@xtray.com" && password === "user123") {
+    if (enteredEmail === "user@xtray.com" && enteredPassword === "user123") {
       localStorage.setItem(
         "loggedInUser",
-        JSON.stringify({ name: "Demo User", email })
+        JSON.stringify({ name: "Demo User", email: enteredEmail })
       );
       alert("Đăng nhập demo thành công!");
       closeAllModals();
@@ -542,12 +542,12 @@ function setupLoginForm() {
       return;
     }
 
-    const user = users.find(
-      (u) => u.email === email && u.password === password
+    const authenticatedUser = registeredUsers.find(
+      (registeredUser) => registeredUser.email === enteredEmail && registeredUser.password === enteredPassword
     );
-    if (!user) return alert("Sai email hoặc mật khẩu!");
+    if (!authenticatedUser) return alert("Sai email hoặc mật khẩu!");
 
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
+    localStorage.setItem("loggedInUser", JSON.stringify(authenticatedUser));
     alert("Đăng nhập thành công!");
     closeAllModals();
     updateUserUI();
@@ -556,48 +556,48 @@ function setupLoginForm() {
 
 // Cập nhật giao diện người dùng
 function updateUserUI() {
-  const user = JSON.parse(localStorage.getItem("loggedInUser"));
-  const loginLink = document.getElementById("login-link");
-  const signupLink = document.getElementById("signup-link");
-  const logoutLink = document.getElementById("logout-link");
-  const userInfo = document.getElementById("user-info");
-  const usernameDisplay = document.getElementById("username-display");
-  const cartLink = document.getElementById("cart-link");
+  const currentUser = JSON.parse(localStorage.getItem("loggedInUser"));
+  const loginLinkElement = document.getElementById("login-link");
+  const signupLinkElement = document.getElementById("signup-link");
+  const logoutLinkElement = document.getElementById("logout-link");
+  const userInfoElement = document.getElementById("user-info");
+  const usernameDisplayElement = document.getElementById("username-display");
+  const cartLinkElement = document.getElementById("cart-link");
 
-  if (user) {
+  if (currentUser) {
     // Đã đăng nhập
-    usernameDisplay.textContent = user.name || user.email.split("@")[0];
-    userInfo.style.display = "inline-block";
-    loginLink.style.display = "none";
-    signupLink.style.display = "none";
-    logoutLink.style.display = "inline-block";
+    usernameDisplayElement.textContent = currentUser.name || currentUser.email.split("@")[0];
+    userInfoElement.style.display = "inline-block";
+    loginLinkElement.style.display = "none";
+    signupLinkElement.style.display = "none";
+    logoutLinkElement.style.display = "inline-block";
 
     // Cho phép truy cập giỏ hàng
-    cartLink.onclick = (e) => allowCartAccess(e);
+    cartLinkElement.onclick = (clickEvent) => allowCartAccess(clickEvent);
 
     // Click vào tên user để xem thông tin
-    userInfo.onclick = (e) => {
-      e.preventDefault();
+    userInfoElement.onclick = (clickEvent) => {
+      clickEvent.preventDefault();
       window.router.openModal("profile-modal");
     };
   } else {
     // Chưa đăng nhập
-    userInfo.style.display = "none";
-    loginLink.style.display = "inline-block";
-    signupLink.style.display = "inline-block";
-    logoutLink.style.display = "none";
+    userInfoElement.style.display = "none";
+    loginLinkElement.style.display = "inline-block";
+    signupLinkElement.style.display = "inline-block";
+    logoutLinkElement.style.display = "none";
 
     // Chặn giỏ hàng nếu chưa login
-    cartLink.onclick = (e) => {
-      e.preventDefault();
+    cartLinkElement.onclick = (clickEvent) => {
+      clickEvent.preventDefault();
       alert("Vui lòng đăng nhập để xem giỏ hàng!");
     };
   }
 }
 
 // Cho phép mở giỏ hàng nếu đã login
-function allowCartAccess(e) {
-  e.preventDefault();
+function allowCartAccess(clickEvent) {
+  clickEvent.preventDefault();
   if (window.router && typeof window.router.openModal === "function") {
     window.router.openModal("cart-modal");
   }
@@ -605,10 +605,10 @@ function allowCartAccess(e) {
 
 // Xử lý đăng xuất
 function setupLogout() {
-  const logoutLink = document.getElementById("logout-link");
-  if (!logoutLink) return;
-  logoutLink.addEventListener("click", (e) => {
-    e.preventDefault();
+  const logoutLinkElement = document.getElementById("logout-link");
+  if (!logoutLinkElement) return;
+  logoutLinkElement.addEventListener("click", (clickEvent) => {
+    clickEvent.preventDefault();
     localStorage.removeItem("loggedInUser");
     alert("Đã đăng xuất!");
     updateUserUI();
@@ -617,11 +617,11 @@ function setupLogout() {
 
 // Đóng toàn bộ modal
 function closeAllModals() {
-  const modalContainer = document.getElementById("modal-container");
+  const modalContainerElement = document.getElementById("modal-container");
   document
     .querySelectorAll(".modal-content")
-    .forEach((m) => m.classList.remove("active"));
-  modalContainer.classList.remove("active");
+    .forEach((modalElement) => modalElement.classList.remove("active"));
+  modalContainerElement.classList.remove("active");
   document.body.style.overflow = "";
 }
 
