@@ -1,4 +1,4 @@
-export const allProduct = [
+const allProduct = [
   {
     id: 1,
     name: "Bàn phím cơ SteelSeries Apex Pro",
