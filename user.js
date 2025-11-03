@@ -569,7 +569,7 @@ function renderOrderHistory() {
 
 // ================= Chuyển tới trang thanh toán =================
 function goToCheckout() {
-  if (cart.length === 0) {
+  if (window.getCart().length === 0) {
     alert("Giỏ hàng trống. Không thể tiếp tục thanh toán!");
     return; // Không chuyển trang
   }
@@ -976,3 +976,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("✅ App initialized (single DOMContentLoaded).");
 });
+
+window.addToCart = addToCart;
+window.showPage = showPage;
+window.goToCheckout = goToCheckout;

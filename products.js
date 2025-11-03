@@ -967,6 +967,7 @@ function setupBuyNowButton(product) {
       }
     } else {
       // ĐÃ ĐĂNG NHẬP
+      const price = parseInt(product.currentPrice.replace(/[^\d]/g, ""));
 
       if (typeof window.setCart === "function") {
         window.setCart([
