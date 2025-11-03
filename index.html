@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Page</title>
+    <!-- Preload hero image để tránh flash -->
+    <link rel="preload" href="./assets/img/hero-main.jpg" as="image" />
     <link rel="stylesheet" href="user.css" />
     <link
       rel="stylesheet"
@@ -213,7 +215,7 @@
                 <h4>Câu chuyện về Xtray</h4>
                 <p>Hành trình 6 năm xây dựng thương hiệu phụ kiện điện tử uy tín hàng đầu Việt Nam, mang đến<br>giải pháp công nghệ chất lượng cao cho hơn 50,000 khách hàng trên toàn quốc.</p>
                 <div class="about-top-container-button">
-                  <button class="about-top-container-button-01">Liên hệ với chúng tôi</button>
+                  <button class="about-top-container-button-01" data-view="contact">Liên hệ với chúng tôi</button>
                   <button class="about-top-container-button-02">Xem sản phẩm</button>
                 </div>
              </div>
@@ -307,7 +309,6 @@
                 <div class="breadcrumb">
                   <a href="#" data-view="home">Trang chủ</a> <span class="breadcrumb-sep">&gt;</span> 
                   <a href="#" data-view="products">Sản phẩm</a> <span class="breadcrumb-sep">&gt;</span> 
-                  <span id="breadcrumb-category">Tất cả sản phẩm</span> <span class="breadcrumb-sep">&gt;</span> 
                   <span id="breadcrumb-product-name"></span>
                 </div>
                 <h1 class="title__left__name">Tất cả sản phẩm</h1>
@@ -351,8 +352,12 @@
                          <div class="form__budget"><span>Mức giá</span></div>
                          <div class="form__budget__checkbox">
                            <div>
-                             <input type="checkbox" id="all" name="price" value="all">
+                             <input type="checkbox" id="all" name="price" value="all" checked>
                              <label for="all">Tất cả</label>
+                           </div>
+                           <div>
+                             <input type="checkbox" id="under500k" name="price" value="under500k">
+                             <label for="under500k">Dưới 500 nghìn</label>
                            </div>
                            <div>
                              <input type="checkbox" id="500k-1m" name="price" value="500k-1m">
@@ -474,7 +479,6 @@
           <div class="breadcrumb">
             <a href="#" data-view="home">Trang chủ</a> <span class="breadcrumb-sep">&gt;</span> 
             <a href="#" data-view="products">Sản phẩm</a> <span class="breadcrumb-sep">&gt;</span> 
-            <span id="breadcrumb-category"></span> <span class="breadcrumb-sep">&gt;</span> 
             <span id="breadcrumb-product-name"></span>
           </div>
           <section>
@@ -742,10 +746,6 @@
     <button class="btn btn-secondary" data-action="close-modal">Đóng</button>
   </div>
 </div>
-
-
-
-
       <div id="cart-modal" class="modal-content">
         <button class="close-btn" data-action="close-modal">&times;</button>
         <h2>Giỏ hàng</h2>
@@ -882,15 +882,15 @@
 
           <h2>Kết nối với chúng tôi</h2>
           <div class="footer__bottom-social">
-            <a href="#"><i class="ri-facebook-fill"></i></a>
-            <a href="#"><i class="ri-github-line"></i></a>
-            <a href="#"><i class="ri-twitter-x-line"></i></a>
+            <a href="https://facebook.com"><i class="ri-facebook-fill"></i></a>
+            <a href="https://github.com"><i class="ri-github-line"></i></a>
+            <a href="https://twitter.com"><i class="ri-twitter-x-line"></i></a>
           </div>
         </div>
         <div class="footer__bottom-box02">
-          <a href="#">Trang chủ</a>
-          <a href="#">Giới thiệu</a>
-          <a href="#">Sản phẩm</a>
+          <a href="#" data-view="home">Trang chủ</a>
+          <a href="#" data-view="about">Giới thiệu</a>
+          <a href="#" data-view="products">Sản phẩm</a>
           <div class="footer__bottom-box02-contact">
             <a class="footer__bottom-box02-contact-a-special" href="#"
               >Liên hệ</a
@@ -915,8 +915,9 @@
       <span>Đã thêm vào giỏ hàng!</span>
     </div>
   </body>
-  <script src="products.js"></script>
   <script src="user.js"></script>
+  <script src="products.js"></script>
+  <script src="mockData.js"></script>
   <script>
     if(window.location.pathname.startsWith("/admin")){
       window.location.href = "admin.html";

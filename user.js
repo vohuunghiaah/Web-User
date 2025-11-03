@@ -2,6 +2,12 @@
 
 // js cho liên hệ
 
+// Đảm bảo trang luôn ở đầu khi load (chỉ một lần)
+if (history.scrollRestoration) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 // js cho sản phẩm
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -85,8 +91,10 @@ class SPARouter {
       targetView.classList.add("active");
       this.currentView = viewName;
 
-      // Cuộn lên đầu trang
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Cuộn lên đầu trang một lần duy nhất với requestAnimationFrame
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+      });
 
       // Cập nhật URL (optional - không reload trang)
       history.pushState({ view: viewName }, "", `#${viewName}`);
@@ -215,6 +223,13 @@ document.addEventListener("DOMContentLoaded", () => {
   window.router.handleBrowserNavigation();
 
   console.log("✅ SPA Navigation System initialized successfully!");
+  
+  // Đảm bảo trang luôn ở đầu sau khi khởi tạo xong
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, 0);
 });
 // ================= Giỏ hàng & localStorage =================
 const shippingFee = 32000; // Phí vận chuyển cố định

@@ -15,6 +15,9 @@ html {
 body {
   font-family: "McLaren", sans-serif;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 .disabled {
   cursor: not-allowed; /* Hiển thị con trỏ chuột 'cấm' */
@@ -76,6 +79,7 @@ header {
   border-radius: 50%;
   right: 0.6rem;
   top: 0.5rem;
+  border: none;
 }
 .search-bar .search-bar__btn i {
   font-size: 1.6rem;
@@ -212,6 +216,8 @@ header
   background-position: center;
   position: relative;
   /* LOẠI BỎ padding-top: 12rem nếu đã áp dụng cho #app-content */
+  will-change: auto;
+  backface-visibility: hidden;
 }
 .content-box {
   text-align: center;
@@ -784,9 +790,13 @@ header
 }
 .spa-view {
   display: none;
+  opacity: 0;
+  transition: opacity 0.15s ease-in;
+  will-change: opacity;
 }
 .spa-view.active {
   display: block;
+  opacity: 1;
 }
 /* Icon font */
 .ri-shield-line:before {
@@ -1599,7 +1609,7 @@ footer {
   width: 100%;
   min-height: 100vh;
   padding: 3rem;
-  padding-bottom: 8rem; /* Thêm khoảng cách với footer để tránh sidebar đè lên */
+  padding-bottom: 15rem; /* Thêm khoảng cách với footer để tránh sidebar đè lên */
   background: #0a0a0a;
 }
 .title {
@@ -1630,7 +1640,6 @@ footer {
   font-weight: 600;
   color: #ffffff;
   text-shadow: 0 0 2rem rgba(255, 215, 0, 0.3);
-  margin-left: -9rem;
 }
 .title__left .title__left__path--highlight {
   color: #0071e3;
@@ -3006,12 +3015,16 @@ form input[type="checkbox"]:checked + label {
   gap: 10px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
   transition: all 0.4s ease;
   z-index: 9999;
 }
 
 .cart-success.show {
   opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
   transform: translate(-50%, -50%) scale(1);
 }
 
