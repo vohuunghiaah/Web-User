@@ -38,14 +38,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // -2. Cài đặt và trạng thái -
   const productsPerPage = 12;
   let currentPage = 1;
-  let currentCategory = "all";
   let currentPriceFilters = [];
   let currentSort = "default";
   let currentSearchQuery = ""; // Thêm biến lưu từ khóa tìm kiếm
   let totalPages = 1;
   // -3. Lấy các phần tử DOM-
   const productsList = document.getElementById("product-list-container");
-  const paginationContainer = document.getElementById("pagination");
   const productTemplate = document.getElementById("product-template");
   const categoryLinks = document.querySelectorAll(
     "#category-filters .products__category__items--details, #category-filters .products-category__items--details"
@@ -191,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (typeof addToCart === "function") {
               addToCart(productName, price, image, 1);
             }
-          } catch (err) {
+          } catch {
             // Xử lý lỗi thầm lặng
           }
         });
@@ -425,7 +423,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Reset state
     currentPage = 1;
-    currentCategory = "all";
     currentPriceFilters = ["all"];
     currentSort = "default";
     currentSearchQuery = ""; // Reset từ khóa tìm kiếm
@@ -503,7 +500,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Cập nhật state
     currentSearchQuery = query;
     currentPage = 1;
-    currentCategory = "all"; // Reset về tất cả để tìm trong toàn bộ sản phẩm
 
     // Reset UI category (không highlight category nào)
     categoryLinks.forEach((l) => l.classList.remove("active"));
@@ -551,7 +547,6 @@ document.addEventListener("DOMContentLoaded", function () {
     showView("view-products");
 
     // Reset về trang 1 và category được chọn
-    currentCategory = category;
     currentPage = 1;
     currentSearchQuery = ""; // Reset từ khóa tìm kiếm
 
@@ -638,7 +633,6 @@ document.addEventListener("DOMContentLoaded", function () {
       // Nếu có một danh mục được chỉ định (vd: "mouse")
       if (category) {
         // CẬP NHẬT TRẠNG THÁI CỦA TRANG SẢN PHẨM
-        currentCategory = category;
         currentPage = 1;
         currentSearchQuery = ""; // Reset từ khóa tìm kiếm
 
@@ -1036,15 +1030,29 @@ function getDefaultFeatures(product) {
   );
 }
 
+// DOM elements for product details
+const DOM = {
+  breadcrumb: document.querySelector('.breadcrumb'),
+  img: document.getElementById('product-detail-img'),
+  name: document.getElementById('product-detail-name'),
+  currentPrice: document.getElementById('product-detail-current-price'),
+  oldPrice: document.getElementById('product-detail-old-price'),
+  salePercent: document.getElementById('product-detail-sale'),
+  description: document.getElementById('product-detail-description'),
+  featuresList: document.getElementById('product-detail-features')
+};
+
 // Hàm cập nhật breadcrumb
 function updateBreadcrumb(product) {
   const categoryName = getCategoryName(product.category);
-  DOM.breadcrumb.innerHTML = `
+  if (DOM.breadcrumb) {
+    DOM.breadcrumb.innerHTML = `
         <a href="#">Trang chủ</a> <span class="breadcrumb-sep">&gt;</span> 
         <a href="#">Sản phẩm</a> <span class="breadcrumb-sep">&gt;</span> 
         <a href="#">${categoryName}</a> <span class="breadcrumb-sep">&gt;</span> 
         <span>${product.name}</span>
     `;
+  }
 }
 
 // Hàm hiển thị sản phẩm (Tối ưu)

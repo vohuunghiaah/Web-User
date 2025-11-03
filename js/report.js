@@ -11,6 +11,8 @@ function navigateSPA(pageId) {
     renderReports();
   }
 }
+// Make function available globally for HTML onclick handlers
+window.navigateSPA = navigateSPA;
 // ======================= DỮ LIỆU MẪU =======================
 const products = [
   {

@@ -278,7 +278,7 @@ function initOrdersPage(){
               if (userIndex === -1) return alert("Lỗi: Không tìm thấy người dùng!");
              
              showPopup(`Bạn có chắc muốn xóa ${users[userIndex].name}?`,``
-              ,vals =>{              
+              ,() =>{              
                 users.splice(userIndex, 1); 
                 setData("users",users);
                 loadMode("users");
@@ -343,7 +343,7 @@ function initOrdersPage(){
                 });
               }
               if (act === "lock") {
-                showPopup("Lock users",`...`, vals => {
+                showPopup("Lock users",`...`, () => {
                   setData("users",users);
                   loadMode("users");
                   popup.classList.remove("active");

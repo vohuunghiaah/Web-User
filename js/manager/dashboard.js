@@ -1,7 +1,5 @@
 
-
 const getData = key => JSON.parse(localStorage.getItem(key));
-const formatCurrency = (val) => (val || 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 const formatDate = (dateString) => new Date(dateString).toLocaleDateString('vi-VN');
 
 // HTML CỦA TRANG

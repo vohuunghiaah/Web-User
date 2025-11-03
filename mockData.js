@@ -2400,3 +2400,6 @@ const allProduct = [
     link: "./product-details.html?id=200",
   },
 ];
+
+// Make allProduct available globally
+window.allProduct = allProduct;

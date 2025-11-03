@@ -103,8 +103,6 @@ class SPARouter {
 
   // Xử lý modal (popup)
   setupModalNavigation() {
-    const modalContainer = document.getElementById("modal-container");
-
     // Mở modal
     const openModalLinks = document.querySelectorAll(
       '[data-action="open-modal"]'
@@ -328,7 +326,7 @@ function renderCart() {
   if (backBtn) {
     backBtn.addEventListener("click", () => {
       // Điều hướng về trang sản phẩm trong SPA và đóng modal giỏ hàng
-      if (typeof showView === "function") showView("view-products");
+      if (typeof window.showView === "function") window.showView("view-products");
       if (window.router && typeof window.router.closeModal === "function") {
         window.router.closeModal();
       }
@@ -438,6 +436,9 @@ function checkoutOrder() {
   showPage("donmua-page");
 }
 
+// Make function available globally for HTML onclick handlers
+window.checkoutOrder = checkoutOrder;
+
 // ================= Hiển thị lịch sử đơn hàng =================
 function renderOrderHistory() {
   const tbody = document.getElementById("order-history");
@@ -466,6 +467,9 @@ function goToCheckout() {
   }
   showPage("thanhtoan-page");
 }
+
+// Make function available globally for HTML onclick handlers
+window.goToCheckout = goToCheckout;
 // ========================== LOGIN & REGISTER ==========================
 
 // ========================== LOGIN & REGISTER ==========================
