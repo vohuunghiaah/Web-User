@@ -189,8 +189,9 @@ document.addEventListener("DOMContentLoaded", function () {
             if (typeof addToCart === "function") {
               addToCart(productName, price, image, 1);
             }
-          } catch {
-            // Xử lý lỗi thầm lặng
+          } catch (error) {
+            // Silently handle errors from cart operations to avoid breaking the UI
+            console.error('Error adding to cart:', error);
           }
         });
       }
@@ -1046,12 +1047,51 @@ const DOM = {
 function updateBreadcrumb(product) {
   const categoryName = getCategoryName(product.category);
   if (DOM.breadcrumb) {
-    DOM.breadcrumb.innerHTML = `
-        <a href="#">Trang chủ</a> <span class="breadcrumb-sep">&gt;</span> 
-        <a href="#">Sản phẩm</a> <span class="breadcrumb-sep">&gt;</span> 
-        <a href="#">${categoryName}</a> <span class="breadcrumb-sep">&gt;</span> 
-        <span>${product.name}</span>
-    `;
+    // Clear existing content
+    DOM.breadcrumb.innerHTML = '';
+    
+    // Create breadcrumb elements safely
+    const homeLink = document.createElement('a');
+    homeLink.href = '#';
+    homeLink.textContent = 'Trang chủ';
+    
+    const sep1 = document.createElement('span');
+    sep1.className = 'breadcrumb-sep';
+    sep1.innerHTML = '&gt;';
+    
+    const productsLink = document.createElement('a');
+    productsLink.href = '#';
+    productsLink.textContent = 'Sản phẩm';
+    
+    const sep2 = document.createElement('span');
+    sep2.className = 'breadcrumb-sep';
+    sep2.innerHTML = '&gt;';
+    
+    const categoryLink = document.createElement('a');
+    categoryLink.href = '#';
+    categoryLink.textContent = categoryName;
+    
+    const sep3 = document.createElement('span');
+    sep3.className = 'breadcrumb-sep';
+    sep3.innerHTML = '&gt;';
+    
+    const productSpan = document.createElement('span');
+    productSpan.textContent = product.name;
+    
+    // Append all elements
+    DOM.breadcrumb.appendChild(homeLink);
+    DOM.breadcrumb.appendChild(document.createTextNode(' '));
+    DOM.breadcrumb.appendChild(sep1);
+    DOM.breadcrumb.appendChild(document.createTextNode(' '));
+    DOM.breadcrumb.appendChild(productsLink);
+    DOM.breadcrumb.appendChild(document.createTextNode(' '));
+    DOM.breadcrumb.appendChild(sep2);
+    DOM.breadcrumb.appendChild(document.createTextNode(' '));
+    DOM.breadcrumb.appendChild(categoryLink);
+    DOM.breadcrumb.appendChild(document.createTextNode(' '));
+    DOM.breadcrumb.appendChild(sep3);
+    DOM.breadcrumb.appendChild(document.createTextNode(' '));
+    DOM.breadcrumb.appendChild(productSpan);
   }
 }
 
