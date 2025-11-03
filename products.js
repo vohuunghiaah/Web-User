@@ -1,3 +1,5 @@
+import { allProduct } from "./mockData.js";
+// Khởi tạo dữ liệu sản phẩm trong localStorage nếu cần
 // --- 8. NAVIGATION SYSTEM (SPA) - Đặt ở đây để có thể truy cập từ mọi nơi ---
 // Hàm để ẩn tất cả các view và hiển thị view được chọn
 window.showView = function (viewId) {
@@ -677,11 +679,19 @@ function displayProductDetails(productId) {
   if (typeof allProduct === "undefined") {
     return;
   }
+
+  // ✅ ĐÚNG: Khai báo 'product' TRƯỚC KHI dùng
+  const product = allProduct.find((p) => p.id === productId);
+  if (!product) {
+    console.error("❌ Không tìm thấy sản phẩm với ID:", productId);
+    return;
+  }
+
+  // Sau đó mới kiểm tra tồn kho
   const products = JSON.parse(localStorage.getItem("products")) || [];
   const productInStock = products.find((p) => p.id === product.id);
   const stock = productInStock ? productInStock.quantity : 0;
 
-  // Cập nhật HTML hiển thị stock
   const stockHTML = `
     <p class="stock-info" style="color: ${stock > 10 ? "#4ade80" : "#ef4444"};">
       📦 Còn lại: <strong>${stock}</strong> sản phẩm
@@ -689,22 +699,15 @@ function displayProductDetails(productId) {
     </p>
   `;
 
-  // Thêm vào phần thông tin sản phẩm
   const productInfo = document.querySelector(".products__show-right-info");
   if (productInfo) {
     productInfo.insertAdjacentHTML("beforeend", stockHTML);
-  }
-
-  const product = allProduct.find((p) => p.id === productId);
-  if (!product) {
-    return;
   }
 
   const detailView = document.getElementById("view-product-details");
   if (!detailView) {
     return;
   }
-
   // Cập nhật thông tin sản phẩm
   const img = detailView.querySelector("#product-detail-img");
   const name = detailView.querySelector("#product-detail-name");
@@ -877,6 +880,7 @@ function setupAddToCartButton(product) {
   const addToCartBtn = document.getElementById("product-add-to-cart");
 
   if (!addToCartBtn) {
+    console.warn("Add to cart button not found");
     return; // Không tìm thấy nút
   }
 
@@ -904,6 +908,8 @@ function setupAddToCartButton(product) {
     // Gọi hàm addToCart với số lượng
     if (typeof addToCart === "function") {
       addToCart(productName, price, image, quantity);
+    } else {
+      console.error("addToCart function not found!");
     }
   });
 
@@ -911,12 +917,13 @@ function setupAddToCartButton(product) {
   setupBuyNowButton(product);
 }
 
-// Hàm thiết lập nút "Mua ngay"
+// ==== HÀM THIẾT LẬP NÚT MUA NGAY CHO SẢN PHẨM ====
 function setupBuyNowButton(product) {
   const buyNowBtn = document.querySelector(".products__show-right-buy-buy");
 
   // 1. Kiểm tra element DOM đầu tiên
   if (!buyNowBtn) {
+    console.warn("Buy now button not found");
     return;
   }
 
@@ -960,31 +967,37 @@ function setupBuyNowButton(product) {
       }
     } else {
       // ĐÃ ĐĂNG NHẬP
-
-      // Lấy thông tin sản phẩm
       const price = parseInt(product.currentPrice.replace(/[^\d]/g, ""));
 
-      // Xóa giỏ hàng hiện tại và thêm sản phẩm vào giỏ hàng mới
-      cart = [
-        {
-          name: product.name,
-          price: price,
-          image: product.imgSrc,
-          quantity: quantity,
-        },
-      ];
-      localStorage.setItem("cart", JSON.stringify(cart));
+      if (typeof window.setCart === "function") {
+        window.setCart([
+          {
+            name: product.name,
+            price: price,
+            image: product.imgSrc,
+            quantity: quantity,
+          },
+        ]);
+      } else {
+        // Fallback: trực tiếp gán
+        window.cart = [
+          {
+            name: product.name,
+            price: price,
+            image: product.imgSrc,
+            quantity: quantity,
+          },
+        ];
+        localStorage.setItem("cart", JSON.stringify(window.cart));
+      }
 
       // Mở modal giỏ hàng và hiển thị trang thanh toán
       if (window.router && typeof window.router.openModal === "function") {
         window.router.openModal("cart-modal");
-
-        // Cập nhật cart và checkout
-        renderCart();
-        renderCheckout();
-
         // Chuyển đến trang thanh toán
         setTimeout(() => {
+          renderCart();
+          renderCheckout();
           showPage("thanhtoan-page");
         }, 100);
       }

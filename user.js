@@ -1,3 +1,7 @@
+// Đảm bảo sản phẩm được load từ mockData.js
+if (!localStorage.getItem("products") && typeof allProduct !== "undefined") {
+  localStorage.setItem("products", JSON.stringify(allProduct));
+}
 // SPA Navigation System
 class SPARouter {
   constructor() {
@@ -174,6 +178,18 @@ class SPARouter {
 // js cho sản phẩm
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+window.cart = cart;
+
+// Hoặc tạo getter/setter
+window.getCart = function () {
+  return cart;
+};
+
+window.setCart = function (newCart) {
+  cart = newCart;
+  localStorage.setItem("cart", JSON.stringify(cart));
+};
+
 // Gắn sự kiện click động cho các nút "Thêm vào giỏ" (cả danh sách và phần hot)
 document.addEventListener("click", function (e) {
   const cartBtn = e.target.closest(
@@ -232,10 +248,10 @@ function showAddToCartSuccess(name) {
 }
 
 // ================= Thêm sản phẩm vào giỏ =================
+// Thay vì kiểm tra theo name, nên kiểm tra theo ID hoặc làm mềm điều kiện
 function addToCart(name, price, image, quantity = 1) {
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
   if (!user) {
-    // Lưu sản phẩm tạm để thêm sau khi đăng nhập
     const pendingProduct = { name, price, image, quantity };
     localStorage.setItem("pendingCartItem", JSON.stringify(pendingProduct));
     alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
@@ -245,33 +261,39 @@ function addToCart(name, price, image, quantity = 1) {
     return;
   }
 
-  // 🆕 THÊM: Kiểm tra tồn kho
+  // ✅ CẢI TIẾN: Kiểm tra tồn kho với điều kiện linh hoạt hơn
   const products = JSON.parse(localStorage.getItem("products")) || [];
-  const productInStock = products.find((p) => p.name === name);
+  const productInStock = products.find(
+    (p) => p.name.trim().toLowerCase() === name.trim().toLowerCase()
+  );
 
   if (!productInStock) {
-    alert("Sản phẩm không tồn tại!");
-    return;
+    // ⚠️ CẢNH BÁO thay vì chặn hoàn toàn
+    console.warn(
+      `Sản phẩm "${name}" không tìm thấy trong kho, vẫn cho phép thêm vào giỏ.`
+    );
+    // Không return ở đây, cho phép tiếp tục
+  } else {
+    // Kiểm tra số lượng trong giỏ hiện tại
+    const existing = cart.find((p) => p.name === name);
+    const currentCartQty = existing ? existing.quantity : 0;
+    const requestedQty =
+      Number.isFinite(quantity) && quantity > 0 ? Math.floor(quantity) : 1;
+    const totalQty = currentCartQty + requestedQty;
+
+    if (totalQty > productInStock.quantity) {
+      alert(
+        `Chỉ còn ${productInStock.quantity} sản phẩm "${name}" trong kho!\n(Giỏ hàng đã có ${currentCartQty})`
+      );
+      return;
+    }
   }
 
-  // Kiểm tra số lượng trong giỏ hiện tại
+  // Thêm vào giỏ hàng
   const existing = cart.find((p) => p.name === name);
-  const currentCartQty = existing ? existing.quantity : 0;
   const requestedQty =
     Number.isFinite(quantity) && quantity > 0 ? Math.floor(quantity) : 1;
 
-  // Tổng số lượng sau khi thêm
-  const totalQty = currentCartQty + requestedQty;
-
-  if (totalQty > productInStock.quantity) {
-    alert(
-      `Chỉ còn ${productInStock.quantity} sản phẩm "${name}" trong kho!\n(Giỏ hàng đã có ${currentCartQty})`
-    );
-    return;
-  }
-  // KẾT THÚC PHẦN KIỂM TRA
-
-  // Thêm vào giỏ hàng
   if (existing) {
     existing.quantity += requestedQty;
   } else {
@@ -296,7 +318,12 @@ function safeReplaceHandler(el, event, handler) {
 function renderCart() {
   const container = document.querySelector(".cart-items");
   const emptyMsg = document.querySelector(".cart-empty");
-  if (!container || !emptyMsg) return; // Không tìm thấy phần tử
+
+  // ✅ THÊM KIỂM TRA
+  if (!container || !emptyMsg) {
+    console.warn("Cart elements not found");
+    return;
+  }
   container.innerHTML = "";
 
   if (cart.length === 0) {
@@ -378,11 +405,19 @@ function renderCart() {
 }
 
 // ================= Render checkout =================
+// ================= Render checkout =================
 function renderCheckout() {
   const summary = document.querySelector(".cart-items-summary");
   const subtotalEl = document.querySelector(".subtotal");
   const shippingEl = document.querySelector(".shipping");
   const totalEl = document.querySelector(".total");
+
+  // ✅ THÊM KIỂM TRA AN TOÀN
+  if (!summary || !subtotalEl || !shippingEl || !totalEl) {
+    console.warn("Checkout elements not found - page may not be visible yet");
+    return; // Thoát sớm nếu các element chưa tồn tại
+  }
+
   summary.innerHTML = "";
   let subtotal = 0;
 
@@ -391,12 +426,12 @@ function renderCheckout() {
     const div = document.createElement("div");
     div.classList.add("product-item");
     div.innerHTML = `
-            <img src="${item.image}" alt="${item.name}">
-            <div>
-                <p><strong>${item.name}</strong></p>
-                <p>${item.price} đ x ${item.quantity}</p>
-                <button class="remove-btn">Xóa</button>
-            </div>`;
+      <img src="${item.image}" alt="${item.name}">
+      <div>
+        <p><strong>${item.name}</strong></p>
+        <p>${item.price} đ x ${item.quantity}</p>
+        <button class="remove-btn">Xóa</button>
+      </div>`;
     summary.appendChild(div);
 
     div.querySelector(".remove-btn").addEventListener("click", () => {
@@ -411,7 +446,6 @@ function renderCheckout() {
   shippingEl.innerText = shippingFee + " đ";
   totalEl.innerHTML = `<strong>Tổng cộng:</strong> ${subtotal + shippingFee} đ`;
 }
-
 // ================= Hiển thị form chuyển khoản =================
 document.querySelectorAll('input[name="pay"]').forEach((radio) => {
   radio.addEventListener("change", () => {
@@ -438,12 +472,18 @@ function checkoutOrder() {
   const city = form.querySelector('input[placeholder="Tỉnh/Thành phố"]').value;
   const payMethod = form.querySelector('input[name="pay"]:checked').value;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 996c95e04ccdb6377c00ca9b2a16a29a9801021b
   if (!name || !email || !phone || !address || !ward || !district || !city) {
     alert("Vui lòng điền đầy đủ thông tin giao hàng trước khi thanh toán!");
     return;
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 996c95e04ccdb6377c00ca9b2a16a29a9801021b
   // Tính tổng
   let total =
     cart.reduce((sum, p) => sum + p.price * p.quantity, 0) + shippingFee;
@@ -536,7 +576,7 @@ function renderOrderHistory() {
 
 // ================= Chuyển tới trang thanh toán =================
 function goToCheckout() {
-  if (cart.length === 0) {
+  if (window.getCart().length === 0) {
     alert("Giỏ hàng trống. Không thể tiếp tục thanh toán!");
     return; // Không chuyển trang
   }
@@ -848,8 +888,8 @@ document.addEventListener("DOMContentLoaded", () => {
   window.router = new SPARouter();
   window.spaRouter = window.router;
   // 2) Khởi tạo các module liên quan tới giỏ hàng / đơn hàng
-  renderCart();
-  renderCheckout();
+  // renderCart();
+  // renderCheckout();
 
   // 3) Khởi tạo auth (login/register/profile/logout)
   setupAuthFormToggle();
@@ -943,3 +983,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("✅ App initialized (single DOMContentLoaded).");
 });
+
+window.addToCart = addToCart;
+window.showPage = showPage;
+window.goToCheckout = goToCheckout;
