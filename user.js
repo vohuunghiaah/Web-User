@@ -319,83 +319,82 @@ function renderCart() {
   const container = document.querySelector(".cart-items");
   const emptyMsg = document.querySelector(".cart-empty");
 
-  // ✅ THÊM KIỂM TRA
   if (!container || !emptyMsg) {
     console.warn("Cart elements not found");
     return;
   }
+
   container.innerHTML = "";
 
   if (cart.length === 0) {
     emptyMsg.style.display = "block";
-    return;
-  }
-  emptyMsg.style.display = "none";
+  } else {
+    emptyMsg.style.display = "none";
 
-  cart.forEach((item, index) => {
-    const div = document.createElement("div");
-    div.classList.add("item");
-    div.dataset.index = index;
-    div.innerHTML = `
-            <img src="${item.image}" alt="${item.name}">
-            <div>
-                <p>${item.name}</p>
-                <p>${item.price} đ x <span class="qty">${item.quantity}</span></p>
-                <div class="quantity-controls">
-                    <button class="decrease">-</button>
-                    <button class="increase">+</button>
-                </div>
-                <button class="remove-btn">Xóa</button>
-            </div>`;
-    const qtySpan = div.querySelector(".qty");
+    cart.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.classList.add("item");
+      div.dataset.index = index;
+      div.innerHTML = `
+              <img src="${item.image}" alt="${item.name}">
+              <div>
+                  <p>${item.name}</p>
+                  <p>${item.price} đ x <span class="qty">${item.quantity}</span></p>
+                  <div class="quantity-controls">
+                      <button class="decrease">-</button>
+                      <button class="increase">+</button>
+                  </div>
+                  <button class="remove-btn">Xóa</button>
+              </div>`;
+      const qtySpan = div.querySelector(".qty");
 
-    // Nút xóa
-    div.querySelector(".remove-btn").addEventListener("click", () => {
-      cart.splice(index, 1);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      renderCart();
-      div.classList.add("fade-out");
-      setTimeout(() => {
-        div.remove();
-        renderCheckout();
-        if (cart.length === 0) emptyMsg.style.display = "block";
-      }, 300);
-    });
-
-    // Nút tăng
-    div.querySelector(".increase").addEventListener("click", () => {
-      item.quantity++;
-      localStorage.setItem("cart", JSON.stringify(cart));
-      qtySpan.textContent = item.quantity; // <-- SỬA: Chỉ cập nhật số lượng
-      renderCheckout();
-    });
-
-    //nut giam
-    div.querySelector(".decrease").addEventListener("click", () => {
-      item.quantity--;
-      localStorage.setItem("cart", JSON.stringify(cart));
-
-      if (item.quantity <= 0) {
+      // Nút xóa
+      div.querySelector(".remove-btn").addEventListener("click", () => {
         cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        renderCart();
         div.classList.add("fade-out");
         setTimeout(() => {
           div.remove();
           renderCheckout();
           if (cart.length === 0) emptyMsg.style.display = "block";
         }, 300);
-      } else {
+      });
+
+      // Nút tăng
+      div.querySelector(".increase").addEventListener("click", () => {
+        item.quantity++;
+        localStorage.setItem("cart", JSON.stringify(cart));
         qtySpan.textContent = item.quantity;
         renderCheckout();
-      }
-    });
-    container.appendChild(div);
-  });
+      });
 
-  // Nút quay lại chỉ tạo 1 lần
+      // Nút giảm
+      div.querySelector(".decrease").addEventListener("click", () => {
+        item.quantity--;
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        if (item.quantity <= 0) {
+          cart.splice(index, 1);
+          div.classList.add("fade-out");
+          setTimeout(() => {
+            div.remove();
+            renderCheckout();
+            if (cart.length === 0) emptyMsg.style.display = "block";
+          }, 300);
+        } else {
+          qtySpan.textContent = item.quantity;
+          renderCheckout();
+        }
+      });
+      container.appendChild(div);
+    });
+  }
+
+  // ✅ Nút quay lại luôn được gắn sự kiện, dù giỏ hàng có trống hay không
   const backBtn = document.getElementById("back-to-shop");
   if (backBtn) {
     safeReplaceHandler(backBtn, "click", () => {
-      // Điều hướng về trang sản phẩm trong SPA và đóng modal giỏ hàng
       if (typeof showView === "function") showView("view-products");
       if (window.router && typeof window.router.closeModal === "function") {
         window.router.closeModal();
@@ -403,8 +402,6 @@ function renderCart() {
     });
   }
 }
-
-// ================= Render checkout =================
 // ================= Render checkout =================
 function renderCheckout() {
   const summary = document.querySelector(".cart-items-summary");
@@ -412,10 +409,9 @@ function renderCheckout() {
   const shippingEl = document.querySelector(".shipping");
   const totalEl = document.querySelector(".total");
 
-  // ✅ THÊM KIỂM TRA AN TOÀN
   if (!summary || !subtotalEl || !shippingEl || !totalEl) {
     console.warn("Checkout elements not found - page may not be visible yet");
-    return; // Thoát sớm nếu các element chưa tồn tại
+    return;
   }
 
   summary.innerHTML = "";
@@ -445,15 +441,17 @@ function renderCheckout() {
   subtotalEl.innerText = subtotal + " đ";
   shippingEl.innerText = shippingFee + " đ";
   totalEl.innerHTML = `<strong>Tổng cộng:</strong> ${subtotal + shippingFee} đ`;
-}
-// ================= Hiển thị form chuyển khoản =================
-document.querySelectorAll('input[name="pay"]').forEach((radio) => {
-  radio.addEventListener("change", () => {
-    document.getElementById("bank-info").style.display =
-      radio.value === "bank" ? "block" : "none";
-  });
-});
 
+  // ✅ THÊM: Gắn sự kiện cho nút quay lại trong trang thanh toán
+  const backBtnCheckout = document.querySelector(
+    "#thanhtoan-page #back-to-shop"
+  );
+  if (backBtnCheckout) {
+    safeReplaceHandler(backBtnCheckout, "click", () => {
+      showPage("cart-page"); // Quay về trang giỏ hàng
+    });
+  }
+}
 // ================= Thanh toán =================
 function checkoutOrder() {
   if (cart.length === 0) {
@@ -566,7 +564,7 @@ function renderOrderHistory() {
   });
 }
 
-// Chuyển tới trang thanh toán 
+// Chuyển tới trang thanh toán
 function goToCheckout() {
   if (window.getCart().length === 0) {
     alert("Giỏ hàng trống. Không thể tiếp tục thanh toán!");
@@ -574,7 +572,7 @@ function goToCheckout() {
   }
   showPage("thanhtoan-page");
 }
-//  LOGIN & REGISTER 
+//  LOGIN & REGISTER
 
 // Chuyển qua lại giữa login/signup modal
 function setupAuthFormToggle() {
