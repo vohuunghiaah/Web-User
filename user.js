@@ -264,7 +264,7 @@ function addToCart(name, price, image, quantity = 1) {
   showAddToCartSuccess(name);
 }
 
-// An toàn gán lại event handler (để tránh gán nhiều lần)
+// ====== An toàn gán lại event handler (để tránh gán nhiều lần)========
 function safeReplaceHandler(el, event, handler) {
   if (!el) return;
   const clone = el.cloneNode(true);
@@ -277,6 +277,7 @@ function safeReplaceHandler(el, event, handler) {
 function renderCart() {
   const container = document.querySelector(".cart-items");
   const emptyMsg = document.querySelector(".cart-empty");
+  if (!container || !emptyMsg) return; // Không tìm thấy phần tử
   container.innerHTML = "";
 
   if (cart.length === 0) {
@@ -288,6 +289,7 @@ function renderCart() {
   cart.forEach((item, index) => {
     const div = document.createElement("div");
     div.classList.add("item");
+    div.dataset.index = index;
     div.innerHTML = `
             <img src="${item.image}" alt="${item.name}">
             <div>
@@ -299,30 +301,48 @@ function renderCart() {
                 </div>
                 <button class="remove-btn">Xóa</button>
             </div>`;
-    container.appendChild(div);
+    const qtySpan = div.querySelector(".qty");
 
     // Nút xóa
     div.querySelector(".remove-btn").addEventListener("click", () => {
       cart.splice(index, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
       renderCart();
-      renderCheckout();
+      div.classList.add("fade-out");
+      setTimeout(() => {
+        div.remove();
+        renderCheckout();
+        if (cart.length === 0) emptyMsg.style.display = "block";
+      }, 300);
     });
 
-    // Nút tăng giảm
+    // Nút tăng
     div.querySelector(".increase").addEventListener("click", () => {
       item.quantity++;
       localStorage.setItem("cart", JSON.stringify(cart));
-      renderCart();
+      qtySpan.textContent = item.quantity; // <-- SỬA: Chỉ cập nhật số lượng
       renderCheckout();
     });
+
+    //nut giam
     div.querySelector(".decrease").addEventListener("click", () => {
       item.quantity--;
-      if (item.quantity <= 0) cart.splice(index, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
-      renderCart();
-      renderCheckout();
+
+      if (item.quantity <= 0) {
+        cart.splice(index, 1);
+        div.classList.add("fade-out");
+        setTimeout(() => {
+          div.remove();
+          renderCheckout();
+          if (cart.length === 0) emptyMsg.style.display = "block";
+        }, 300);
+      } else {
+        qtySpan.textContent = item.quantity;
+        renderCheckout();
+      }
     });
+    container.appendChild(div);
   });
 
   // Nút quay lại chỉ tạo 1 lần
@@ -413,13 +433,14 @@ function checkoutOrder() {
   };
   orders.push(order);
   localStorage.setItem("orders", JSON.stringify(orders));
+  alert("Đặt hàng thành công!");
 
-  // Hiển thị hóa đơn
+  // ===Hiển thị hóa đơn ===
   const billProducts = document.querySelector(".bill-products");
   const billTotal = document.querySelector(".bill-total");
   const billPay = document.querySelector(".bill-pay");
   const dateEl = document.getElementById("date");
-
+  const billAddress = document.querySelector(".bill-address");
   billProducts.innerHTML = "";
   order.products.forEach((item) => {
     const p = document.createElement("p");
@@ -431,8 +452,8 @@ function checkoutOrder() {
   billTotal.innerText = total + " đ";
   billPay.innerText = payMethod.toUpperCase();
   dateEl.innerText = order.date;
-
-  // Xóa giỏ hàng
+  billAddress.innerText = `${name}, ${address}, ${ward}, ${district}, ${city}, SĐT: ${phone}`;
+  //  === Xóa giỏ hàng ===
   cart = [];
   localStorage.removeItem("cart");
   renderCart();
@@ -567,6 +588,29 @@ function setupLoginForm() {
 
     // Kiểm tra xem có sản phẩm đang chờ thêm vào giỏ không
     checkPendingCartItem();
+
+    const pendingItem = JSON.parse(localStorage.getItem("pendingBuyNow"));
+
+    if (pendingItem && pendingItem.action === "buyNow") {
+      // Có 1 món đang chờ mua
+
+      // 1. Ghi đè giỏ hàng với món này
+      cart = [pendingItem];
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      // 2. Xóa pending item
+      localStorage.removeItem("pendingBuyNow");
+
+      // 3. Mở giỏ hàng và chuyển đến trang thanh toán
+      if (window.router && typeof window.router.openModal === "function") {
+        window.router.openModal("cart-modal");
+        renderCart();
+        renderCheckout();
+        setTimeout(() => {
+          showPage("thanhtoan-page");
+        }, 100);
+      }
+    }
   });
 }
 
@@ -682,7 +726,9 @@ function setupProfileForm() {
   });
 }
 
-// Kiểm tra và thêm sản phẩm đang chờ vào giỏ hàng sau khi đăng nhập
+// ========================== END LOGIN & REGISTER ==========================
+
+// ===== Kiểm tra và thêm sản phẩm đang chờ vào giỏ hàng sau khi đăng nhập=====
 function checkPendingCartItem() {
   const pendingProduct = JSON.parse(localStorage.getItem("pendingCartItem"));
 
@@ -706,10 +752,37 @@ function checkPendingCartItem() {
     // Hiển thị thông báo thành công
     showAddToCartSuccess(name);
   }
+  // Kiểm tra xem có sản phẩm "Mua ngay" đang chờ không
+  checkPendingBuyNow();
 }
 
-// ========================== END LOGIN & REGISTER ==========================
+// Hàm kiểm tra và xử lý "Mua ngay" sau khi đăng nhập
+function checkPendingBuyNow() {
+  const pendingBuyNow = JSON.parse(localStorage.getItem("pendingBuyNow"));
 
+  if (pendingBuyNow && pendingBuyNow.action === "buyNow") {
+    const { name, price, image, quantity } = pendingBuyNow;
+
+    // Xóa giỏ hàng hiện tại và thêm sản phẩm mua ngay
+    cart = [{ name, price, image, quantity }];
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // Xóa pending buy now
+    localStorage.removeItem("pendingBuyNow");
+
+    // Mở modal giỏ hàng và chuyển đến trang thanh toán
+    if (window.router && typeof window.router.openModal === "function") {
+      window.router.openModal("cart-modal");
+      renderCart();
+      renderCheckout();
+
+      // Chuyển đến trang thanh toán
+      setTimeout(() => {
+        showPage("thanhtoan-page");
+      }, 200);
+    }
+  }
+}
 //Hàm
 // === 1 DOMCONTENTLOADED DUY NHẤT — chèn ở cuối file, xóa 3 listener cũ ===
 document.addEventListener("DOMContentLoaded", () => {
@@ -729,15 +802,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 4) Cập nhật UI người dùng (dựa trên trạng thái loggedInUser)
   //    và gắn các event handler quan trọng một cách "idempotent" (an toàn gán 1 lần).
-  function safeReplaceHandler(el, event, handler) {
-    if (!el) return;
-    // Thay thế phần tử bằng clone để đảm bảo không còn handler cũ (clean slate)
-    const clone = el.cloneNode(true);
-    el.parentNode.replaceChild(clone, el);
-    clone.addEventListener(event, handler);
-    return clone;
-  }
-
   function attachUserUIHandlers() {
     const loginLink = document.getElementById("login-link");
     const signupLink = document.getElementById("signup-link");
@@ -747,7 +811,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const usernameDisplay = document.getElementById("username-display");
 
     // updateUserUI sẽ set trạng thái hiển thị; nhưng không gán onclick trực tiếp nhiều lần
-    updateUserUI();
 
     // Gắn handler cho cartLink an toàn (1 lần)
     if (cartLink) {
@@ -782,7 +845,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     }
-
     // Gắn click vào userInfo để mở profile modal (an toàn)
     if (userInfo) {
       safeReplaceHandler(userInfo, "click", (e) => {
@@ -800,11 +862,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     }
+    if (typeof updateUserUI === "function") {
+      updateUserUI();
+    }
   }
-
   // Gọi attach once
   attachUserUIHandlers();
-
   // 5) Khởi tạo modal-related (nếu chưa khởi)
   //    setupModalNavigation() đã được gọi trong constructor SPARouter,
   //    nhưng gọi lại an toàn nếu cần (idempotent) — đảm bảo listener đã sẳn sàng.
@@ -814,9 +877,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ) {
     try {
       window.router.setupModalNavigation();
-    } catch (e) {
-      // nếu method không tồn tại, bỏ qua
-    }
+    } catch (e) {}
   }
 
   // 6) Cuộn lên đầu an toàn 1 lần

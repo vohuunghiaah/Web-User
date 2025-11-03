@@ -898,51 +898,82 @@ function setupAddToCartButton(product) {
 function setupBuyNowButton(product) {
   const buyNowBtn = document.querySelector(".products__show-right-buy-buy");
 
+  // 1. Kiểm tra element DOM đầu tiên
   if (!buyNowBtn) {
     return;
   }
 
-  // Xóa event listener cũ bằng cách clone nút
+  // 2. Xóa event listener cũ (dùng cloneNode)
+  // Chỉ cần làm điều này 1 lần, bất kể đã đăng nhập hay chưa
   const newBtn = buyNowBtn.cloneNode(true);
   buyNowBtn.parentNode.replaceChild(newBtn, buyNowBtn);
 
-  const btn = document.querySelector(".products__show-right-buy-buy");
-
-  // Thêm event listener mới
-  btn.addEventListener("click", function (e) {
+  // 3. Thêm event listener mới vào nút MỚI
+  newBtn.addEventListener("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
 
-    // Lấy số lượng từ input
+    // Lấy số lượng (luôn cần)
     const quantityInput = document.getElementById("product-quantity");
     const quantity = parseInt(quantityInput?.value) || 1;
 
-    // Lấy thông tin sản phẩm
-    const productName = product.name;
-    const priceText = product.currentPrice;
-    const price = parseInt(priceText.replace(/[^\d]/g, ""));
-    const image = product.imgSrc;
+    // Kiểm tra đăng nhập (kiểm tra BÊN TRONG listener)
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
-    // Xóa giỏ hàng hiện tại và thêm sản phẩm vào giỏ hàng mới
-    cart = [
-      { name: productName, price: price, image: image, quantity: quantity },
-    ];
-    localStorage.setItem("cart", JSON.stringify(cart));
+    if (!user) {
+      // CHƯA ĐĂNG NHẬP
 
-    // Mở modal giỏ hàng và hiển thị trang thanh toán
-    if (window.router && typeof window.router.openModal === "function") {
-      window.router.openModal("cart-modal");
-      // Cập nhật cart và checkout
-      renderCart();
-      renderCheckout();
-      // Chuyển đến trang thanh toán
-      setTimeout(() => {
-        showPage("thanhtoan-page");
-      }, 100);
+      // Lưu thông tin sản phẩm để mua sau khi đăng nhập
+      const pendingBuyNow = {
+        name: product.name,
+        price: parseInt(product.currentPrice.replace(/[^\d]/g, "")),
+        image: product.imgSrc,
+        quantity: quantity,
+        action: "buyNow", // Đánh dấu đây là mua ngay
+      };
+
+      localStorage.setItem("pendingBuyNow", JSON.stringify(pendingBuyNow));
+
+      // Hiển thị thông báo và mở modal đăng nhập
+      alert("Vui lòng đăng nhập để mua sản phẩm!");
+
+      // SỬA TYPO: Giả sử window.router là tên đúng
+      if (window.router && typeof window.router.openModal === "function") {
+        window.router.openModal("login-modal");
+      }
+    } else {
+      // ĐÃ ĐĂNG NHẬP
+
+      // Lấy thông tin sản phẩm
+      const price = parseInt(product.currentPrice.replace(/[^\d]/g, ""));
+
+      // Xóa giỏ hàng hiện tại và thêm sản phẩm vào giỏ hàng mới
+      cart = [
+        {
+          name: product.name,
+          price: price,
+          image: product.imgSrc,
+          quantity: quantity,
+        },
+      ];
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      // Mở modal giỏ hàng và hiển thị trang thanh toán
+      if (window.router && typeof window.router.openModal === "function") {
+        window.router.openModal("cart-modal");
+
+        // Cập nhật cart và checkout
+        renderCart();
+        renderCheckout();
+
+        // Chuyển đến trang thanh toán
+        setTimeout(() => {
+          showPage("thanhtoan-page");
+        }, 100);
+      }
     }
   });
 }
-
 // --- 2. CÁC HÀM TIỆN ÍCH (Giữ nguyên) ---
 
 // Hàm lấy tham số từ URL query string

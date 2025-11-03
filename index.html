@@ -17,9 +17,9 @@
   </head>
   <body>
  <!-- HEADER -->
-    <header>
-      <div class="header__top">
-        <div class="logo">Xtray</div>
+  <header>
+    <div class="header__top">
+      <div class="logo">Xtray</div>
         <div class="search-bar">
           <input
             id="search-input"
@@ -30,28 +30,22 @@
           <button id="search-btn" class="search-bar__btn">
             <i class="ri-search-line"></i>
           </button>
-        </div>
-        <nav id="main-nav">
-  <span id="user-info" style="display: none; color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">👋 Xin chào, <strong id="username-display"></strong></span>
-
-  <a href="#" data-action="open-modal" data-target="login-modal" id="login-link">👤 Đăng nhập</a>
-  <a href="#" data-action="open-modal" data-target="signup-modal" id="signup-link">➕ Đăng ký</a>
-
-  <a href="#" id="cart-link" style="display: none;">
-    🛒 Giỏ hàng
-  </a>
-
-  <a href="#" id="logout-link" >🚪 Đăng xuất</a>
-</nav>
-
       </div>
-      <div class="header__bottom">
+        <nav id="main-nav">
+          <span id="user-info" style="display: none; color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">👋 Xin chào, <strong id="username-display"></strong></span>
+          <a href="#" data-action="open-modal" data-target="login-modal" id="login-link">👤 Đăng nhập</a>
+          <a href="#" data-action="open-modal" data-target="signup-modal" id="signup-link">➕ Đăng ký</a>
+          <a href="#" id="cart-link" style="display: none;">🛒 Giỏ hàng</a>
+          <a href="#" id="logout-link" >🚪 Đăng xuất</a>
+        </nav>
+    </div>
+    <div class="header__bottom">
         <nav class="header__bottom__nav">
           <ul>
             <li><a href="#" data-view="home">Trang chủ</a></li>
             <li><a href="#" data-view="about">Giới thiệu</a></li>
             <li>
-              <a href="#" data-view="products"> Sản phẩm <i class="ri-arrow-down-s-line"></i> </a>
+            <a href="#" data-view="products"> Sản phẩm <i class="ri-arrow-down-s-line"></i> </a>
               <nav class="header__bottom__dropdown">
                 <ul>
                   <li><a href="#" data-view="products" data-category="mouse">Chuột</a></li>
@@ -65,7 +59,7 @@
           </ul>
         </nav>
       </div>
-    </header>
+  </header>
 
     <div id="app-content">
       <section id="view-home" class="spa-view active">
@@ -755,6 +749,7 @@
       <p><strong>Tổng tiền:</strong> <span class="bill-total">0 đ</span></p>
       <p><strong>Phương thức:</strong> <span class="bill-pay">COD</span></p>
       <p><strong>Ngày đặt hàng:</strong> <span id="date"></span></p>
+      <p><strong>Địa chỉ giao hàng:</strong> <span class="bill-address"></span></p>
     </div>
     <div class="history">
       <h3>Lịch sử mua hàng gần đây</h3>

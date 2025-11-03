@@ -152,12 +152,8 @@ header
   ul
   li:hover
   .header__bottom__dropdown {
-  /* === SỬA LỖI LOGIC TẠI ĐÂY === */
-  /* Bỏ margin-top, dùng top và left */
   top: 100%; /* 100% chiều cao của thẻ li (là 4rem) */
-  left: 0; /* Căn trái với thẻ li */
-  /* === HẾT SỬA LỖI === */
-
+  left: 0;
   display: block;
   width: 18rem;
   height: 18rem;
@@ -3083,4 +3079,10 @@ textarea {
 #logout-link:hover {
   color: #ffffff; /* Đổi sang màu trắng khi di chuột */
   text-decoration: underline;
+}
+/* Fade out */
+.item.fade-out {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
