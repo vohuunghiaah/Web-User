@@ -1151,15 +1151,14 @@ header
   content: "\f5de";
   font-size: 2.4rem;
 }
-/* End About-us */
-/* modal */
+/* 🎄 CONTAINER MODAL */
 /* 🎄 CONTAINER MODAL */
 .modal-container {
   position: fixed;
   inset: 0;
   display: none;
-  align-items: center; /* ✅ Căn giữa dọc */
-  justify-content: center; /* ✅ Căn giữa ngang */
+  align-items: center;
+  justify-content: center;
   z-index: 2000;
   font-family: "Poppins", "Segoe UI", sans-serif;
 }
@@ -1168,50 +1167,80 @@ header
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 10, 10, 0.55);
+  background: rgba(10, 65, 10, 0.55);
   backdrop-filter: blur(6px);
   cursor: pointer;
   z-index: 2000;
 }
 
-/* 🎁 NỘI DUNG MODAL */
+/* 🎁 NỘI DUNG MODAL - Christmas Theme */
 .modal-content {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.95);
-  background: linear-gradient(135deg, #fff8f0, #fff);
-  border-radius: 1.5rem;
+  background: linear-gradient(135deg, #ffd700, #e53935);
+  border-radius: 2rem;
   padding: 3.5rem 3rem;
-  box-shadow: 0 0 25px rgba(255, 0, 0, 0.15), 0 0 45px rgba(0, 128, 0, 0.15);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), 0 0 60px rgba(0, 128, 0, 0.3);
   z-index: 2001;
-
   opacity: 0;
   visibility: hidden;
   min-width: 38rem;
   max-width: 90%;
-  border: 3px solid rgba(255, 0, 0, 0.2);
-
+  border: 3px solid #ffe135;
+  color: #333;
   transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.4s ease;
 }
 
-.modal-container.active {
-  display: block;
+/* Hoa tuyết bay xung quanh modal */
+.modal-content::before,
+.modal-content::after {
+  content: "❆";
+  position: absolute;
+  font-size: 2.8rem;
+  color: #fff;
+  opacity: 0.6;
+  animation: snow-spin 12s linear infinite;
 }
+
+.modal-content::before {
+  top: -1.5rem;
+  left: 2.2rem;
+}
+
+.modal-content::after {
+  bottom: -1.8rem;
+  right: 2.7rem;
+}
+
+@keyframes snow-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.modal-container.active {
+  display: flex;
+}
+
 .modal-content.active {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, -50%) scale(1);
-  box-shadow: 0 0 30px rgba(255, 0, 0, 0.25), 0 0 60px rgba(0, 128, 0, 0.25);
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(0, 128, 0, 0.5);
 }
 
-/* 🎀 NÚT ĐÓNG */
+/* 🎀 NÚT ĐÓNG kiểu Christmas */
 .close-btn {
   position: absolute;
   top: 1rem;
   right: 1.5rem;
   font-size: 3rem;
-  color: #c00;
+  color: #ffd700;
   background: none;
   border: none;
   cursor: pointer;
@@ -1219,11 +1248,11 @@ header
 }
 
 .close-btn:hover {
-  color: #0b7a0b;
-  transform: rotate(90deg);
+  color: #e53935;
+  transform: rotate(90deg) scale(1.2);
 }
 
-/* 🧸 FORM NỘI DUNG (nếu có) */
+/* 🧸 FORM NỘI DUNG */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -1232,7 +1261,7 @@ header
 
 .auth-form label {
   font-weight: 600;
-  color: #333;
+  color: #444;
   margin-bottom: 0.3rem;
 }
 
@@ -1248,13 +1277,13 @@ header
 }
 
 .auth-form input:focus {
-  border-color: #c00;
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+  border-color: #e53935;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
 }
 
 /* 💫 NÚT CHÍNH */
 .btn-primary {
-  background: linear-gradient(135deg, #c00, #0b7a0b);
+  background: linear-gradient(135deg, #e53935, #2e7d32);
   color: white;
   border: none;
   padding: 1.1rem;
@@ -1267,14 +1296,16 @@ header
 
 .btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
 }
 
-/* 🎁 FOOTER */
+/* 🎁 FOOTER kiểu Christmas */
 .form-footer {
   text-align: center;
   font-size: 1.4rem;
   margin-top: 1.2rem;
+  color: #2e7d32;
+  text-shadow: 0 1px 6px #ffe4e1, 0 0 4px #d32f2f;
 }
 
 .form-footer a {
@@ -1284,97 +1315,18 @@ header
 
 .form-footer a:hover {
   text-decoration: underline;
-  color: #0b7a0b;
+  color: #2e7d32;
 }
 
-#profile-modal .auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  padding: 1rem 0;
-  font-family: "Poppins", "Segoe UI", sans-serif;
-}
-
-/* 🎁 NHÓM TRƯỜNG */
-#profile-modal .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-#profile-modal .form-group label {
-  font-weight: 600;
-  font-size: 1.5rem;
-  color: #b30000; /* đỏ ấm kiểu Noel */
-  display: none;
-  align-items: center;
-  text-shadow: 0 0 4px rgba(255, 0, 0, 0.15);
-}
-
-#profile-modal .form-group label i {
-  color: #0b7a0b; /* xanh cây thông */
-  margin-right: 8px;
-  font-size: 1.6rem;
-}
-
-/* 🧸 INPUT */
-#profile-modal input {
-  width: 100%;
-  padding: 1rem 1.2rem;
-  border-radius: 0.6rem;
-  border: 2px solid rgba(0, 128, 0, 0.25);
-  background-color: #fffdf9;
-  font-size: 1.5rem;
-  outline: none;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-#profile-modal input:focus {
-  border-color: #c00;
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.25);
-}
-
-/* ⛄ INPUT CHỈ ĐỌC */
-#profile-modal input[readonly] {
-  background-color: #fafafa;
-  cursor: not-allowed;
-  color: #666;
-  border: 1px solid rgba(0, 128, 0, 0.2);
-}
-
-/* 🎄 NÚT LƯU / CẬP NHẬT */
-#profile-modal .btn-save {
-  background: linear-gradient(135deg, #c00, #0b7a0b);
-  color: #fff;
-  border: none;
-  padding: 1rem 1.2rem;
-  border-radius: 0.8rem;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1.6rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin-top: 1rem;
-}
-
-#profile-modal .btn-save:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(255, 0, 0, 0.2);
-}
-
-/* 💫 FOOTER */
-#profile-modal .form-footer {
-  text-align: center;
-  font-size: 1.4rem;
-  margin-top: 1.2rem;
-  color: #444;
-}
 /* 🚫 KHÓA CUỘN KHI MỞ MODAL */
 body.modal-open {
   overflow: hidden;
   height: 100vh;
 }
-/* footer css */
 
+/* END MODAL  */
+
+/* FOOTER */
 @import url("https://fonts.googleapis.com/css2?family=Anton+SC&family=McLaren&display=swap");
 footer {
   border-top: 0.1rem solid yellow;
@@ -3111,4 +3063,24 @@ textarea {
   height: 100%;
   border: 0;
   border-radius: 10px;
+}
+
+/* LOGOUT */
+#logout-link {
+  /* Dùng font-family giống như lời chào của bạn */
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+
+  color: #ffd700; /* Màu vàng sáng (giống ngôi sao) */
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1em; /* To hơn một chút */
+
+  /* Tạo khoảng cách giữa lời chào và link đăng xuất */
+  margin-left: 20px;
+  transition: color 0.3s ease;
+}
+
+#logout-link:hover {
+  color: #ffffff; /* Đổi sang màu trắng khi di chuột */
+  text-decoration: underline;
 }

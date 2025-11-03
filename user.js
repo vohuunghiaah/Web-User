@@ -1,50 +1,3 @@
-// js cho phan login va register
-
-// js cho liên hệ
-
-// Đảm bảo trang luôn ở đầu khi load (chỉ một lần)
-if (history.scrollRestoration) {
-  history.scrollRestoration = 'manual';
-}
-window.scrollTo(0, 0);
-
-// js cho sản phẩm
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-// Gắn sự kiện click động cho các nút "Thêm vào giỏ" (cả danh sách và phần hot)
-document.addEventListener("click", function (e) {
-  const cartBtn = e.target.closest(
-    ".products__list__item--img__cart, .product-hottest-item--img__cart"
-  );
-  if (!cartBtn) return;
-  e.preventDefault();
-  e.stopPropagation();
-
-  // Tìm phần tử sản phẩm gần nhất và lấy dữ liệu hiển thị
-  const item = cartBtn.closest(".products__list__item, .product-hottest-item");
-  if (!item) return;
-  const nameEl = item.querySelector(
-    ".products__list__item--name, .product-hottest-item--name"
-  );
-  const priceEl = item.querySelector(
-    ".products__list__item--price, .product-hottest-item--price"
-  );
-  const imgEl = item.querySelector("img");
-  if (!nameEl || !priceEl || !imgEl) return;
-  const name = nameEl.textContent.trim();
-  const price = parseInt(priceEl.textContent.replace(/[^\d]/g, "")) || 0;
-  const image = imgEl.src;
-  addToCart(name, price, image, 1);
-});
-
-// Để bạn có thể lấy dữ liệu giỏ hàng
-window.getCart = function () {
-  return cart;
-};
-// js cho giới thiệu
-
-// JS điều hướng
-
 // SPA Navigation System
 class SPARouter {
   constructor() {
@@ -58,6 +11,7 @@ class SPARouter {
     this.setupModalNavigation();
     this.setupShopNowButton();
     this.setupAllProductsButton();
+    this.handleBrowserNavigation();
   }
 
   // Xử lý điều hướng giữa các view
@@ -216,21 +170,40 @@ class SPARouter {
     });
   }
 }
+// ================= Giỏ hàng & localStorage =================
+// js cho sản phẩm
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// Khởi tạo SPA khi trang load xong
-document.addEventListener("DOMContentLoaded", () => {
-  window.router = new SPARouter();
-  window.router.handleBrowserNavigation();
+// Gắn sự kiện click động cho các nút "Thêm vào giỏ" (cả danh sách và phần hot)
+document.addEventListener("click", function (e) {
+  const cartBtn = e.target.closest(
+    ".products__list__item--img__cart, .product-hottest-item--img__cart"
+  );
+  if (!cartBtn) return;
+  e.preventDefault();
+  e.stopPropagation();
 
-  console.log("✅ SPA Navigation System initialized successfully!");
-  
-  // Đảm bảo trang luôn ở đầu sau khi khởi tạo xong
-  setTimeout(() => {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-  }, 0);
+  // Tìm phần tử sản phẩm gần nhất và lấy dữ liệu hiển thị
+  const item = cartBtn.closest(".products__list__item, .product-hottest-item");
+  if (!item) return;
+  const nameEl = item.querySelector(
+    ".products__list__item--name, .product-hottest-item--name"
+  );
+  const priceEl = item.querySelector(
+    ".products__list__item--price, .product-hottest-item--price"
+  );
+  const imgEl = item.querySelector("img");
+  if (!nameEl || !priceEl || !imgEl) return;
+  const name = nameEl.textContent.trim();
+  const price = parseInt(priceEl.textContent.replace(/[^\d]/g, "")) || 0;
+  const image = imgEl.src;
+  addToCart(name, price, image, 1);
 });
+
+// Để bạn có thể lấy dữ liệu giỏ hàng
+window.getCart = function () {
+  return cart;
+};
 // ================= Giỏ hàng & localStorage =================
 const shippingFee = 32000; // Phí vận chuyển cố định
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -260,6 +233,26 @@ function showAddToCartSuccess(name) {
 
 // ================= Thêm sản phẩm vào giỏ =================
 function addToCart(name, price, image, quantity = 1) {
+  // Kiểm tra xem người dùng đã đăng nhập chưa
+  const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (!user) {
+    // Lưu thông tin sản phẩm để thêm sau khi đăng nhập
+    const pendingProduct = { name, price, image, quantity };
+    localStorage.setItem("pendingCartItem", JSON.stringify(pendingProduct));
+
+    // Hiển thị thông báo và mở modal đăng nhập
+    alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
+
+    // Mở modal đăng nhập
+    const router = window.spaRouter;
+    if (router && typeof router.openModal === "function") {
+      router.openModal("login-modal");
+    }
+    return;
+  }
+
+  // Nếu đã đăng nhập, thêm sản phẩm vào giỏ bình thường
   const qty =
     Number.isFinite(quantity) && quantity > 0 ? Math.floor(quantity) : 1;
   const existing = cart.find((p) => p.name === name);
@@ -269,6 +262,15 @@ function addToCart(name, price, image, quantity = 1) {
   renderCart();
   renderCheckout();
   showAddToCartSuccess(name);
+}
+
+// An toàn gán lại event handler (để tránh gán nhiều lần)
+function safeReplaceHandler(el, event, handler) {
+  if (!el) return;
+  const clone = el.cloneNode(true);
+  el.parentNode.replaceChild(clone, el);
+  clone.addEventListener(event, handler);
+  return clone;
 }
 
 // ================= Render giỏ hàng =================
@@ -326,7 +328,7 @@ function renderCart() {
   // Nút quay lại chỉ tạo 1 lần
   const backBtn = document.getElementById("back-to-shop");
   if (backBtn) {
-    backBtn.addEventListener("click", () => {
+    safeReplaceHandler(backBtn, "click", () => {
       // Điều hướng về trang sản phẩm trong SPA và đóng modal giỏ hàng
       if (typeof showView === "function") showView("view-products");
       if (window.router && typeof window.router.closeModal === "function") {
@@ -453,12 +455,7 @@ function renderOrderHistory() {
   });
 }
 
-// ================= Khởi tạo trang =================
-document.addEventListener("DOMContentLoaded", () => {
-  renderCart();
-  renderCheckout();
-  showPage("cart-page");
-});
+// ================= Chuyển tới trang thanh toán =================
 function goToCheckout() {
   if (cart.length === 0) {
     alert("Giỏ hàng trống. Không thể tiếp tục thanh toán!");
@@ -466,8 +463,6 @@ function goToCheckout() {
   }
   showPage("thanhtoan-page");
 }
-// ========================== LOGIN & REGISTER ==========================
-
 // ========================== LOGIN & REGISTER ==========================
 
 // Chuyển qua lại giữa login/signup modal
@@ -554,6 +549,9 @@ function setupLoginForm() {
       alert("Đăng nhập demo thành công!");
       closeAllModals();
       updateUserUI();
+
+      // Kiểm tra xem có sản phẩm đang chờ thêm vào giỏ không
+      checkPendingCartItem();
       return;
     }
 
@@ -566,6 +564,9 @@ function setupLoginForm() {
     alert("Đăng nhập thành công!");
     closeAllModals();
     updateUserUI();
+
+    // Kiểm tra xem có sản phẩm đang chờ thêm vào giỏ không
+    checkPendingCartItem();
   });
 }
 
@@ -579,6 +580,11 @@ function updateUserUI() {
   const usernameDisplay = document.getElementById("username-display");
   const cartLink = document.getElementById("cart-link");
 
+  if (!window.router) {
+    console.warn("Router chưa sẵn, bỏ qua updateUserUI()");
+    return;
+  }
+
   if (user) {
     // Đã đăng nhập
     usernameDisplay.textContent = user.name || user.email.split("@")[0];
@@ -586,27 +592,13 @@ function updateUserUI() {
     loginLink.style.display = "none";
     signupLink.style.display = "none";
     logoutLink.style.display = "inline-block";
-
-    // Cho phép truy cập giỏ hàng
-    cartLink.onclick = (e) => allowCartAccess(e);
-
-    // Click vào tên user để xem thông tin
-    userInfo.onclick = (e) => {
-      e.preventDefault();
-      window.router.openModal("profile-modal");
-    };
+    cartLink.style.display = "inline-block";
   } else {
     // Chưa đăng nhập
     userInfo.style.display = "none";
     loginLink.style.display = "inline-block";
     signupLink.style.display = "inline-block";
     logoutLink.style.display = "none";
-
-    // Chặn giỏ hàng nếu chưa login
-    cartLink.onclick = (e) => {
-      e.preventDefault();
-      alert("Vui lòng đăng nhập để xem giỏ hàng!");
-    };
   }
 }
 
@@ -690,13 +682,145 @@ function setupProfileForm() {
   });
 }
 
-// Khởi tạo các chức năng login/register khi load trang
+// Kiểm tra và thêm sản phẩm đang chờ vào giỏ hàng sau khi đăng nhập
+function checkPendingCartItem() {
+  const pendingProduct = JSON.parse(localStorage.getItem("pendingCartItem"));
+
+  if (pendingProduct) {
+    const { name, price, image, quantity } = pendingProduct;
+
+    // Thêm sản phẩm vào giỏ hàng
+    const qty =
+      Number.isFinite(quantity) && quantity > 0 ? Math.floor(quantity) : 1;
+    const existing = cart.find((p) => p.name === name);
+    if (existing) existing.quantity += qty;
+    else cart.push({ name, price, image, quantity: qty });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+    renderCheckout();
+
+    // Xóa sản phẩm đang chờ
+    localStorage.removeItem("pendingCartItem");
+
+    // Hiển thị thông báo thành công
+    showAddToCartSuccess(name);
+  }
+}
+
+// ========================== END LOGIN & REGISTER ==========================
+
+//Hàm
+// === 1 DOMCONTENTLOADED DUY NHẤT — chèn ở cuối file, xóa 3 listener cũ ===
 document.addEventListener("DOMContentLoaded", () => {
+  // 1) Khởi tạo router SPA trước (bắt buộc)
+  window.router = new SPARouter();
+  window.spaRouter = window.router;
+  // 2) Khởi tạo các module liên quan tới giỏ hàng / đơn hàng
+  renderCart();
+  renderCheckout();
+
+  // 3) Khởi tạo auth (login/register/profile/logout)
   setupAuthFormToggle();
   setupRegisterForm();
   setupLoginForm();
   setupProfileForm();
   setupLogout();
-  updateUserUI();
+
+  // 4) Cập nhật UI người dùng (dựa trên trạng thái loggedInUser)
+  //    và gắn các event handler quan trọng một cách "idempotent" (an toàn gán 1 lần).
+  function safeReplaceHandler(el, event, handler) {
+    if (!el) return;
+    // Thay thế phần tử bằng clone để đảm bảo không còn handler cũ (clean slate)
+    const clone = el.cloneNode(true);
+    el.parentNode.replaceChild(clone, el);
+    clone.addEventListener(event, handler);
+    return clone;
+  }
+
+  function attachUserUIHandlers() {
+    const loginLink = document.getElementById("login-link");
+    const signupLink = document.getElementById("signup-link");
+    const logoutLink = document.getElementById("logout-link");
+    const userInfo = document.getElementById("user-info");
+    const cartLink = document.getElementById("cart-link");
+    const usernameDisplay = document.getElementById("username-display");
+
+    // updateUserUI sẽ set trạng thái hiển thị; nhưng không gán onclick trực tiếp nhiều lần
+    updateUserUI();
+
+    // Gắn handler cho cartLink an toàn (1 lần)
+    if (cartLink) {
+      safeReplaceHandler(cartLink, "click", (e) => {
+        const user = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (!user) {
+          e.preventDefault();
+          alert("Vui lòng đăng nhập để xem giỏ hàng!");
+
+          const modalContainer = document.getElementById("modal-container");
+          const loginModal = document.getElementById("login-modal");
+          if (modalContainer && loginModal) {
+            modalContainer.classList.add("active");
+            loginModal.classList.add("active");
+            document.body.style.overflow = "hidden";
+          }
+        } else {
+          // Nếu đã login, mở modal giỏ hàng qua router (nếu có)
+          e.preventDefault();
+          if (window.router && typeof window.router.openModal === "function") {
+            window.router.openModal("cart-modal");
+          } else {
+            // fallback: show modal directly
+            const modalContainer = document.getElementById("modal-container");
+            const cartModal = document.getElementById("cart-modal");
+            if (modalContainer && cartModal) {
+              modalContainer.classList.add("active");
+              cartModal.classList.add("active");
+              document.body.style.overflow = "hidden";
+            }
+          }
+        }
+      });
+    }
+
+    // Gắn click vào userInfo để mở profile modal (an toàn)
+    if (userInfo) {
+      safeReplaceHandler(userInfo, "click", (e) => {
+        e.preventDefault();
+        if (window.router && typeof window.router.openModal === "function") {
+          window.router.openModal("profile-modal");
+        } else {
+          const modalContainer = document.getElementById("modal-container");
+          const profileModal = document.getElementById("profile-modal");
+          if (modalContainer && profileModal) {
+            modalContainer.classList.add("active");
+            profileModal.classList.add("active");
+            document.body.style.overflow = "hidden";
+          }
+        }
+      });
+    }
+  }
+
+  // Gọi attach once
+  attachUserUIHandlers();
+
+  // 5) Khởi tạo modal-related (nếu chưa khởi)
+  //    setupModalNavigation() đã được gọi trong constructor SPARouter,
+  //    nhưng gọi lại an toàn nếu cần (idempotent) — đảm bảo listener đã sẳn sàng.
+  if (
+    window.router &&
+    typeof window.router.setupModalNavigation === "function"
+  ) {
+    try {
+      window.router.setupModalNavigation();
+    } catch (e) {
+      // nếu method không tồn tại, bỏ qua
+    }
+  }
+
+  // 6) Cuộn lên đầu an toàn 1 lần
+  requestAnimationFrame(() => window.scrollTo(0, 0));
+
+  console.log("✅ App initialized (single DOMContentLoaded).");
 });
-// ========================== END LOGIN & REGISTER ==========================

@@ -15,8 +15,8 @@
       referrerpolicy="no-referrer"
     />
   </head>
-  <>
-    <!-- header -->
+  <body>
+ <!-- HEADER -->
     <header>
       <div class="header__top">
         <div class="logo">Xtray</div>
@@ -32,16 +32,16 @@
           </button>
         </div>
         <nav id="main-nav">
-  <span id="user-info" style="display: none; color: white;">👋 Xin chào, <strong id="username-display"></strong></span>
+  <span id="user-info" style="display: none; color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">👋 Xin chào, <strong id="username-display"></strong></span>
 
   <a href="#" data-action="open-modal" data-target="login-modal" id="login-link">👤 Đăng nhập</a>
   <a href="#" data-action="open-modal" data-target="signup-modal" id="signup-link">➕ Đăng ký</a>
 
-  <a href="#" id="cart-link" data-action="open-modal" data-target="cart-modal">
+  <a href="#" id="cart-link" style="display: none;">
     🛒 Giỏ hàng
   </a>
 
-  <a href="#" id="logout-link" style="display: none;">🚪 Đăng xuất</a>
+  <a href="#" id="logout-link" >🚪 Đăng xuất</a>
 </nav>
 
       </div>
@@ -683,7 +683,7 @@
 
   <!-- CART -->
 <div id="cart-modal" class="modal-content">
-        <button class="close-btn" data-action="close-modal">&times;</button>
+      <button class="close-btn" data-action="close-modal">&times;</button>
         <h2>Giỏ hàng</h2>
         <!-- Giỏ hàng -->
 <section id="cart-page" class="page-section active-page">
