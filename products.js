@@ -1,4 +1,4 @@
-import { allProduct } from "./mockData.js";
+let allProduct = JSON.parse(localStorage.getItem("products")) || [];
 // Khởi tạo dữ liệu sản phẩm trong localStorage nếu cần
 // --- 8. NAVIGATION SYSTEM (SPA) - Đặt ở đây để có thể truy cập từ mọi nơi ---
 // Hàm để ẩn tất cả các view và hiển thị view được chọn
@@ -673,6 +673,33 @@ document.addEventListener("DOMContentLoaded", function () {
   // 6. Hiển thị trang chủ khi tải lần đầu và đảm bảo ở đầu trang
   showView("view-home");
 });
+  const channel = new BroadcastChannel('data_update');
+  channel.onmessage = (event) => {
+    // Kiểm tra xem có đúng là tín hiệu cập nhật sản phẩm không
+    if (event.data.type === 'products_updated') {
+      
+      console.log("Phía User: Phát hiện cập nhật sản phẩm từ Admin! Đang tải lại...");
+
+      // 1. Lấy dữ liệu sản phẩm MỚI NHẤT từ localStorage
+      allProduct = JSON.parse(localStorage.getItem("products")) || [];
+
+      // 2. Vẽ lại danh sách sản phẩm (hàm này sẽ tự gọi displayProducts)
+      if (typeof filterProductsFromActiveCategories === 'function') {
+        filterProductsFromActiveCategories();
+      }
+
+      // 3. (Nâng cao) Tải lại trang chi tiết nếu đang xem
+      const detailView = document.getElementById('view-product-details');
+      if (detailView.classList.contains('active')) {
+          // Lấy ID sản phẩm đang xem (cần sửa lại cách lấy ID nếu có)
+          const productName = detailView.querySelector("#product-detail-name").textContent;
+          const currentProduct = allProduct.find(p => p.name === productName);
+          if (currentProduct) {
+              displayProductDetails(currentProduct.id);
+          }
+      }
+    }
+  };
 // Kết thúc DOMContentLoaded
 // Hàm hiển thị chi tiết sản phẩm trong SPA
 function displayProductDetails(productId) {

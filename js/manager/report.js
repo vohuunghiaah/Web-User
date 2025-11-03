@@ -199,17 +199,23 @@ export function initReportPage() {
     // --- 5. Xử lý Bảng Sản phẩm bán chạy ---
     const productRevenue = {}; // { "product_id": { name: "Ten SP", sold: 0, revenue: 0 } }
     completedOrders.forEach(order => {
-        const pId = order.productId;
-        if (!productRevenue[pId]) {
-            const productInfo = allProducts.find(p => p.id === pId);
-            productRevenue[pId] = { 
-                name: productInfo ? productInfo.name : `(ID: ${pId})`, 
-                sold: 0, 
-                revenue: 0 
-            };
-        }
-        productRevenue[pId].sold += order.quantity;
-        productRevenue[pId].revenue += order.total;
+        // Lặp qua mảng products trong mỗi đơn hàng
+        order.products.forEach(p => {
+            const pId = p.productId;
+            if (!pId) return; // Bỏ qua nếu sản phẩm không có ID
+
+            if (!productRevenue[pId]) {
+                const productInfo = allProducts.find(prod => prod.id == pId); // Dùng ==
+                productRevenue[pId] = { 
+                    name: productInfo ? productInfo.name : `(ID: ${pId})`, 
+                    sold: 0, 
+                    revenue: 0 
+                };
+            }
+            productRevenue[pId].sold += p.quantity;
+            // Tính doanh thu dựa trên giá sản phẩm * số lượng (chính xác hơn)
+            productRevenue[pId].revenue += (p.price * p.quantity); 
+        });
     });
     
     const sortedProducts = Object.values(productRevenue)

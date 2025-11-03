@@ -1,4 +1,4 @@
-import { allProduct } from "./mockData.js";
+import { allProduct as initialProducts } from "./mockData.js";
 
 const getData = (key) => JSON.parse(localStorage.getItem(key));
 const setData = (key, val) => localStorage.setItem(key, JSON.stringify(val));
@@ -6,55 +6,47 @@ const setData = (key, val) => localStorage.setItem(key, JSON.stringify(val));
 function initializeProducts() {
   let products = getData("products");
 
-  // Nếu chưa có dữ liệu HOẶC dữ liệu bị lỗi
-  if (!products || products.length === 0 || !products[0].quantity) {
-    console.warn("⚠️ LocalStorage trống hoặc dữ liệu cũ, đang khởi tạo lại...");
+  // Chỉ khởi tạo nếu localStorage trống
+  if (!products || products.length === 0) {
+    console.warn("⚠️ LocalStorage trống! Đang khởi tạo 200 sản phẩm (từ mockData)...");
 
-    const productsWithStock = allProduct.map((p) => ({
-      id: p.id,
-      name: p.name.trim(), // ✅ TRIM để loại bỏ khoảng trắng thừa
-      category: p.category,
-      img: p.imgSrc,
-      imgSrc: p.imgSrc, // Giữ cả 2 để tương thích
-      brand: p.brand || extractBrand(p.name),
-      price: p.price,
-      costPrice: Math.floor(p.price * 0.7),
-      quantity: p.quantity || 100,
-      lowStockThreshold: p.lowStockThreshold || 10,
-      status: p.status || "Đang bán",
-      profitMargin: 0.3,
-      orginalPrice: p.orginalPrice,
-      discountPercent: p.discountPercent,
-      currentPrice: p.currentPrice,
-      priceDiscountText: p.priceDiscountText,
-    }));
+    const normalizedProducts = initialProducts.map(p => {
+      // Giả định lợi nhuận 30% (0.3) nếu file mockData không có
+      const profitMargin = p.profitMargin || 0.3; 
+      
+      // Tự động tính Giá Vốn (costPrice) từ Giá Bán (price)
+      const costPrice = p.costPrice || (p.price / (1 + profitMargin)); 
+      
+      // SỬA LỖI ĐƯỜNG DẪN:
+      // Đổi "./assets/..." thành "admin/assets/..."
+      // (Bỏ dấu / ở đầu để nó hoạt động nhất quán)
+      const correctPath = p.imgSrc.replace("./assets/", "../assets/");
+      
+      return {
+        ...p, // Lấy tất cả dữ liệu gốc
+        imgSrc: correctPath,   // Sửa đường dẫn cho trang User
+        img: correctPath,      // Sửa đường dẫn cho trang Admin
+        costPrice: costPrice,  // Thêm Giá Vốn
+        profitMargin: profitMargin // Thêm % Lợi Nhuận
+      };
+    });
 
-    setData("products", productsWithStock);
+    setData("products", normalizedProducts);
     console.log(
       "✅ Đã khởi tạo",
-      productsWithStock.length,
+      normalizedProducts.length,
       "sản phẩm vào localStorage!"
     );
   } else {
-    console.log("✅ LocalStorage đã có", products.length, "sản phẩm");
+    console.log("✅ LocalStorage đã có", products.length, "sản phẩm. Bỏ qua khởi tạo.");
   }
 }
 
-// Hàm tự động tách brand từ tên
+// Hàm này không còn được dùng vì mockData đã có 'brand'
 function extractBrand(productName) {
   const brands = [
-    "SteelSeries",
-    "Leopold",
-    "Corsair",
-    "Razer",
-    "AULA",
-    "HyperX",
-    "ASUS",
-    "Cooler Master",
-    "Ducky",
-    "Varmilo",
-    "Logitech",
-    "Sony",
+    "SteelSeries", "Leopold", "Corsair", "Razer", "AULA",
+    "HyperX", "ASUS", "Cooler Master", "Ducky", "Varmilo", "Logitech", "Sony",
   ];
   for (const brand of brands) {
     if (productName.includes(brand)) return brand;

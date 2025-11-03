@@ -13,7 +13,7 @@ export const allProduct = [
     quantity: 100,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ export const allProduct = [
     quantity: 11,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 3,
@@ -45,7 +45,7 @@ export const allProduct = [
     quantity: 79,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 4,
@@ -61,7 +61,7 @@ export const allProduct = [
     quantity: 58,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 5,
@@ -77,7 +77,7 @@ export const allProduct = [
     quantity: 38,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 6,
@@ -93,7 +93,7 @@ export const allProduct = [
     quantity: 26,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 7,
@@ -109,7 +109,7 @@ export const allProduct = [
     quantity: 97,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 8,
@@ -125,7 +125,7 @@ export const allProduct = [
     quantity: 90,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 9,
@@ -141,7 +141,7 @@ export const allProduct = [
     quantity: 32,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 10,
@@ -157,7 +157,7 @@ export const allProduct = [
     quantity: 37,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 11,
@@ -173,7 +173,7 @@ export const allProduct = [
     quantity: 84,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 12,
@@ -189,7 +189,7 @@ export const allProduct = [
     quantity: 15,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 13,
@@ -205,7 +205,7 @@ export const allProduct = [
     quantity: 65,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 14,
@@ -221,7 +221,7 @@ export const allProduct = [
     quantity: 46,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 15,
@@ -237,7 +237,7 @@ export const allProduct = [
     quantity: 82,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 16,
@@ -253,7 +253,7 @@ export const allProduct = [
     quantity: 97,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 17,
@@ -269,7 +269,7 @@ export const allProduct = [
     quantity: 58,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 18,
@@ -285,7 +285,7 @@ export const allProduct = [
     quantity: 97,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 19,
@@ -301,7 +301,7 @@ export const allProduct = [
     quantity: 84,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 20,
@@ -317,7 +317,7 @@ export const allProduct = [
     quantity: 66,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 21,
@@ -333,7 +333,7 @@ export const allProduct = [
     quantity: 57,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 22,
@@ -349,7 +349,7 @@ export const allProduct = [
     quantity: 17,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 23,
@@ -365,7 +365,7 @@ export const allProduct = [
     quantity: 6,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 24,
@@ -381,7 +381,7 @@ export const allProduct = [
     quantity: 55,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 25,
@@ -397,7 +397,7 @@ export const allProduct = [
     quantity: 59,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 26,
@@ -413,7 +413,7 @@ export const allProduct = [
     quantity: 72,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 27,
@@ -429,7 +429,7 @@ export const allProduct = [
     quantity: 41,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 28,
@@ -445,7 +445,7 @@ export const allProduct = [
     quantity: 75,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 29,
@@ -461,7 +461,7 @@ export const allProduct = [
     quantity: 65,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 30,
@@ -477,7 +477,7 @@ export const allProduct = [
     quantity: 84,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 31,
@@ -493,7 +493,7 @@ export const allProduct = [
     quantity: 92,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 32,
@@ -509,7 +509,7 @@ export const allProduct = [
     quantity: 77,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 33,
@@ -525,7 +525,7 @@ export const allProduct = [
     quantity: 84,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 34,
@@ -541,7 +541,7 @@ export const allProduct = [
     quantity: 61,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 35,
@@ -557,7 +557,7 @@ export const allProduct = [
     quantity: 3,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 36,
@@ -573,7 +573,7 @@ export const allProduct = [
     quantity: 64,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 37,
@@ -589,7 +589,7 @@ export const allProduct = [
     quantity: 98,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 38,
@@ -605,7 +605,7 @@ export const allProduct = [
     quantity: 80,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 39,
@@ -621,7 +621,7 @@ export const allProduct = [
     quantity: 49,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 40,
@@ -637,7 +637,7 @@ export const allProduct = [
     quantity: 32,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 41,
@@ -653,7 +653,7 @@ export const allProduct = [
     quantity: 25,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 42,
@@ -669,7 +669,7 @@ export const allProduct = [
     quantity: 98,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 43,
@@ -685,7 +685,7 @@ export const allProduct = [
     quantity: 36,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 44,
@@ -701,7 +701,7 @@ export const allProduct = [
     quantity: 28,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 45,
@@ -717,7 +717,7 @@ export const allProduct = [
     quantity: 49,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 46,
@@ -733,7 +733,7 @@ export const allProduct = [
     quantity: 21,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 47,
@@ -749,7 +749,7 @@ export const allProduct = [
     quantity: 22,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 48,
@@ -765,7 +765,7 @@ export const allProduct = [
     quantity: 35,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 49,
@@ -781,7 +781,7 @@ export const allProduct = [
     quantity: 35,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 50,
@@ -797,7 +797,7 @@ export const allProduct = [
     quantity: 21,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 51,
@@ -813,7 +813,7 @@ export const allProduct = [
     quantity: 30,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 52,
@@ -829,7 +829,7 @@ export const allProduct = [
     quantity: 21,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 53,
@@ -845,7 +845,7 @@ export const allProduct = [
     quantity: 73,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 54,
@@ -861,7 +861,7 @@ export const allProduct = [
     quantity: 18,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 55,
@@ -877,7 +877,7 @@ export const allProduct = [
     quantity: 75,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 56,
@@ -893,7 +893,7 @@ export const allProduct = [
     quantity: 2,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 57,
@@ -909,7 +909,7 @@ export const allProduct = [
     quantity: 1,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 58,
@@ -925,7 +925,7 @@ export const allProduct = [
     quantity: 35,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 59,
@@ -941,7 +941,7 @@ export const allProduct = [
     quantity: 36,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 60,
@@ -957,7 +957,7 @@ export const allProduct = [
     quantity: 25,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 61,
@@ -973,7 +973,7 @@ export const allProduct = [
     quantity: 5,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 62,
@@ -989,7 +989,7 @@ export const allProduct = [
     quantity: 32,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 63,
@@ -1005,7 +1005,7 @@ export const allProduct = [
     quantity: 59,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 64,
@@ -1021,7 +1021,7 @@ export const allProduct = [
     quantity: 81,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 65,
@@ -1037,7 +1037,7 @@ export const allProduct = [
     quantity: 20,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 66,
@@ -1053,7 +1053,7 @@ export const allProduct = [
     quantity: 84,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 67,
@@ -1069,7 +1069,7 @@ export const allProduct = [
     quantity: 69,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 68,
@@ -1085,7 +1085,7 @@ export const allProduct = [
     quantity: 10,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 69,
@@ -1101,7 +1101,7 @@ export const allProduct = [
     quantity: 38,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 70,
@@ -1117,7 +1117,7 @@ export const allProduct = [
     quantity: 15,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 71,
@@ -1133,7 +1133,7 @@ export const allProduct = [
     quantity: 39,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 72,
@@ -1149,7 +1149,7 @@ export const allProduct = [
     quantity: 65,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 73,
@@ -1165,7 +1165,7 @@ export const allProduct = [
     quantity: 18,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 74,
@@ -1181,7 +1181,7 @@ export const allProduct = [
     quantity: 68,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 75,
@@ -1197,7 +1197,7 @@ export const allProduct = [
     quantity: 87,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 76,
@@ -1213,7 +1213,7 @@ export const allProduct = [
     quantity: 11,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 77,
@@ -1229,7 +1229,7 @@ export const allProduct = [
     quantity: 29,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 78,
@@ -1245,7 +1245,7 @@ export const allProduct = [
     quantity: 46,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 79,
@@ -1261,7 +1261,7 @@ export const allProduct = [
     quantity: 57,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 80,
@@ -1277,7 +1277,7 @@ export const allProduct = [
     quantity: 69,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 81,
@@ -1293,7 +1293,7 @@ export const allProduct = [
     quantity: 90,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 82,
@@ -1309,7 +1309,7 @@ export const allProduct = [
     quantity: 22,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 83,
@@ -1325,7 +1325,7 @@ export const allProduct = [
     quantity: 99,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 84,
@@ -1341,7 +1341,7 @@ export const allProduct = [
     quantity: 97,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 85,
@@ -1357,7 +1357,7 @@ export const allProduct = [
     quantity: 67,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 86,
@@ -1373,7 +1373,7 @@ export const allProduct = [
     quantity: 56,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 87,
@@ -1389,7 +1389,7 @@ export const allProduct = [
     quantity: 96,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 88,
@@ -1405,7 +1405,7 @@ export const allProduct = [
     quantity: 86,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 89,
@@ -1421,7 +1421,7 @@ export const allProduct = [
     quantity: 9,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 90,
@@ -1437,7 +1437,7 @@ export const allProduct = [
     quantity: 71,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 91,
@@ -1453,7 +1453,7 @@ export const allProduct = [
     quantity: 56,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 92,
@@ -1469,7 +1469,7 @@ export const allProduct = [
     quantity: 7,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 93,
@@ -1485,7 +1485,7 @@ export const allProduct = [
     quantity: 65,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 94,
@@ -1501,7 +1501,7 @@ export const allProduct = [
     quantity: 69,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 95,
@@ -1517,7 +1517,7 @@ export const allProduct = [
     quantity: 55,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 96,
@@ -1533,7 +1533,7 @@ export const allProduct = [
     quantity: 69,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 97,
@@ -1549,7 +1549,7 @@ export const allProduct = [
     quantity: 38,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 98,
@@ -1565,7 +1565,7 @@ export const allProduct = [
     quantity: 96,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 99,
@@ -1581,7 +1581,7 @@ export const allProduct = [
     quantity: 58,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 100,
@@ -1597,7 +1597,7 @@ export const allProduct = [
     quantity: 10,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 101,
@@ -1613,7 +1613,7 @@ export const allProduct = [
     quantity: 95,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 102,
@@ -1629,7 +1629,7 @@ export const allProduct = [
     quantity: 41,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 103,
@@ -1645,7 +1645,7 @@ export const allProduct = [
     quantity: 65,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 104,
@@ -1661,7 +1661,7 @@ export const allProduct = [
     quantity: 5,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 105,
@@ -1677,7 +1677,7 @@ export const allProduct = [
     quantity: 49,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 106,
@@ -1693,7 +1693,7 @@ export const allProduct = [
     quantity: 56,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 107,
@@ -1709,7 +1709,7 @@ export const allProduct = [
     quantity: 22,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 108,
@@ -1725,7 +1725,7 @@ export const allProduct = [
     quantity: 16,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 109,
@@ -1741,7 +1741,7 @@ export const allProduct = [
     quantity: 93,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 110,
@@ -1757,7 +1757,7 @@ export const allProduct = [
     quantity: 41,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 111,
@@ -1773,7 +1773,7 @@ export const allProduct = [
     quantity: 31,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 112,
@@ -1789,7 +1789,7 @@ export const allProduct = [
     quantity: 53,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 113,
@@ -1805,7 +1805,7 @@ export const allProduct = [
     quantity: 55,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 114,
@@ -1821,7 +1821,7 @@ export const allProduct = [
     quantity: 45,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 115,
@@ -1837,7 +1837,7 @@ export const allProduct = [
     quantity: 29,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 116,
@@ -1853,7 +1853,7 @@ export const allProduct = [
     quantity: 76,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 117,
@@ -1869,7 +1869,7 @@ export const allProduct = [
     quantity: 64,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 118,
@@ -1885,7 +1885,7 @@ export const allProduct = [
     quantity: 95,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 119,
@@ -1901,7 +1901,7 @@ export const allProduct = [
     quantity: 33,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 120,
@@ -1917,7 +1917,7 @@ export const allProduct = [
     quantity: 84,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 121,
@@ -1933,7 +1933,7 @@ export const allProduct = [
     quantity: 43,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 122,
@@ -1949,7 +1949,7 @@ export const allProduct = [
     quantity: 30,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 123,
@@ -1965,7 +1965,7 @@ export const allProduct = [
     quantity: 29,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 124,
@@ -1981,7 +1981,7 @@ export const allProduct = [
     quantity: 49,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 125,
@@ -1997,7 +1997,7 @@ export const allProduct = [
     quantity: 9,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 126,
@@ -2013,7 +2013,7 @@ export const allProduct = [
     quantity: 73,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 127,
@@ -2029,7 +2029,7 @@ export const allProduct = [
     quantity: 14,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 128,
@@ -2045,7 +2045,7 @@ export const allProduct = [
     quantity: 9,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 129,
@@ -2061,7 +2061,7 @@ export const allProduct = [
     quantity: 74,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 130,
@@ -2077,7 +2077,7 @@ export const allProduct = [
     quantity: 67,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 131,
@@ -2093,7 +2093,7 @@ export const allProduct = [
     quantity: 1,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 132,
@@ -2109,7 +2109,7 @@ export const allProduct = [
     quantity: 91,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 133,
@@ -2125,7 +2125,7 @@ export const allProduct = [
     quantity: 92,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 134,
@@ -2141,7 +2141,7 @@ export const allProduct = [
     quantity: 71,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 135,
@@ -2157,7 +2157,7 @@ export const allProduct = [
     quantity: 38,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 136,
@@ -2173,7 +2173,7 @@ export const allProduct = [
     quantity: 56,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 137,
@@ -2189,7 +2189,7 @@ export const allProduct = [
     quantity: 52,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 138,
@@ -2205,7 +2205,7 @@ export const allProduct = [
     quantity: 54,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 139,
@@ -2221,7 +2221,7 @@ export const allProduct = [
     quantity: 89,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 140,
@@ -2237,7 +2237,7 @@ export const allProduct = [
     quantity: 42,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 141,
@@ -2253,7 +2253,7 @@ export const allProduct = [
     quantity: 78,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 142,
@@ -2269,7 +2269,7 @@ export const allProduct = [
     quantity: 29,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 143,
@@ -2285,7 +2285,7 @@ export const allProduct = [
     quantity: 3,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 144,
@@ -2301,7 +2301,7 @@ export const allProduct = [
     quantity: 35,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 145,
@@ -2317,7 +2317,7 @@ export const allProduct = [
     quantity: 87,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 146,
@@ -2333,7 +2333,7 @@ export const allProduct = [
     quantity: 78,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 147,
@@ -2349,7 +2349,7 @@ export const allProduct = [
     quantity: 42,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 148,
@@ -2365,7 +2365,7 @@ export const allProduct = [
     quantity: 3,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 149,
@@ -2381,7 +2381,7 @@ export const allProduct = [
     quantity: 83,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 150,
@@ -2397,7 +2397,7 @@ export const allProduct = [
     quantity: 30,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 151,
@@ -2413,7 +2413,7 @@ export const allProduct = [
     quantity: 24,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 152,
@@ -2429,7 +2429,7 @@ export const allProduct = [
     quantity: 45,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 153,
@@ -2445,7 +2445,7 @@ export const allProduct = [
     quantity: 97,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 154,
@@ -2461,7 +2461,7 @@ export const allProduct = [
     quantity: 62,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 155,
@@ -2477,7 +2477,7 @@ export const allProduct = [
     quantity: 89,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 156,
@@ -2493,7 +2493,7 @@ export const allProduct = [
     quantity: 61,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 157,
@@ -2509,7 +2509,7 @@ export const allProduct = [
     quantity: 14,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 158,
@@ -2525,7 +2525,7 @@ export const allProduct = [
     quantity: 66,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 159,
@@ -2541,7 +2541,7 @@ export const allProduct = [
     quantity: 25,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 160,
@@ -2557,7 +2557,7 @@ export const allProduct = [
     quantity: 59,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 161,
@@ -2573,7 +2573,7 @@ export const allProduct = [
     quantity: 87,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 162,
@@ -2589,7 +2589,7 @@ export const allProduct = [
     quantity: 11,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 163,
@@ -2605,7 +2605,7 @@ export const allProduct = [
     quantity: 22,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 164,
@@ -2621,7 +2621,7 @@ export const allProduct = [
     quantity: 60,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 165,
@@ -2637,7 +2637,7 @@ export const allProduct = [
     quantity: 84,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 166,
@@ -2653,7 +2653,7 @@ export const allProduct = [
     quantity: 20,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 167,
@@ -2669,7 +2669,7 @@ export const allProduct = [
     quantity: 28,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 168,
@@ -2685,7 +2685,7 @@ export const allProduct = [
     quantity: 22,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 169,
@@ -2701,7 +2701,7 @@ export const allProduct = [
     quantity: 3,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 170,
@@ -2717,7 +2717,7 @@ export const allProduct = [
     quantity: 16,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 171,
@@ -2733,7 +2733,7 @@ export const allProduct = [
     quantity: 23,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 172,
@@ -2749,7 +2749,7 @@ export const allProduct = [
     quantity: 30,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 173,
@@ -2765,7 +2765,7 @@ export const allProduct = [
     quantity: 80,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 174,
@@ -2781,7 +2781,7 @@ export const allProduct = [
     quantity: 38,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 175,
@@ -2797,7 +2797,7 @@ export const allProduct = [
     quantity: 72,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 176,
@@ -2813,7 +2813,7 @@ export const allProduct = [
     quantity: 73,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 177,
@@ -2829,7 +2829,7 @@ export const allProduct = [
     quantity: 22,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 178,
@@ -2845,7 +2845,7 @@ export const allProduct = [
     quantity: 49,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 179,
@@ -2861,7 +2861,7 @@ export const allProduct = [
     quantity: 46,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 180,
@@ -2877,7 +2877,7 @@ export const allProduct = [
     quantity: 5,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 181,
@@ -2893,7 +2893,7 @@ export const allProduct = [
     quantity: 73,
     lowStockThreshold: 10,
     brand: "Logitech",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 182,
@@ -2909,7 +2909,7 @@ export const allProduct = [
     quantity: 64,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 183,
@@ -2925,7 +2925,7 @@ export const allProduct = [
     quantity: 8,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 184,
@@ -2941,7 +2941,7 @@ export const allProduct = [
     quantity: 30,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 185,
@@ -2957,7 +2957,7 @@ export const allProduct = [
     quantity: 26,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 186,
@@ -2973,7 +2973,7 @@ export const allProduct = [
     quantity: 26,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 187,
@@ -2989,7 +2989,7 @@ export const allProduct = [
     quantity: 4,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 188,
@@ -3005,7 +3005,7 @@ export const allProduct = [
     quantity: 39,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 189,
@@ -3021,7 +3021,7 @@ export const allProduct = [
     quantity: 36,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 190,
@@ -3037,7 +3037,7 @@ export const allProduct = [
     quantity: 29,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 191,
@@ -3053,7 +3053,7 @@ export const allProduct = [
     quantity: 80,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 192,
@@ -3069,7 +3069,7 @@ export const allProduct = [
     quantity: 11,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 193,
@@ -3085,7 +3085,7 @@ export const allProduct = [
     quantity: 12,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 194,
@@ -3101,7 +3101,7 @@ export const allProduct = [
     quantity: 46,
     lowStockThreshold: 10,
     brand: "Sony",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 195,
@@ -3117,7 +3117,7 @@ export const allProduct = [
     quantity: 45,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 196,
@@ -3133,7 +3133,7 @@ export const allProduct = [
     quantity: 42,
     lowStockThreshold: 10,
     brand: "Razer",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 197,
@@ -3149,7 +3149,7 @@ export const allProduct = [
     quantity: 55,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 198,
@@ -3165,7 +3165,7 @@ export const allProduct = [
     quantity: 18,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 199,
@@ -3181,7 +3181,7 @@ export const allProduct = [
     quantity: 30,
     lowStockThreshold: 10,
     brand: "SteelSeries",
-    status: "Đang bán",
+    status: "Active",
   },
   {
     id: 200,
@@ -3197,6 +3197,6 @@ export const allProduct = [
     quantity: 12,
     lowStockThreshold: 10,
     brand: "Apple",
-    status: "Đang bán",
+    status: "Active",
   },
 ];

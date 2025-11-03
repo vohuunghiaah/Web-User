@@ -85,18 +85,15 @@ export function initDashboardPage() {
     
     // --- 3. Chạy Tra Cứu X-N-T ---
     ledgerBtn.onclick = () => {
-        const productId = ledgerProductSelect.value;
+        const productId = parseInt(ledgerProductSelect.value);
         const product = allProducts.find(p => p.id === productId);
         if (!product) return;
 
         const dateFrom = document.getElementById('ledger-date-from').value;
         const dateTo = document.getElementById('ledger-date-to').value;
         
-        // Mặc định 1 tháng trước
-        const start = dateFrom ? new Date(dateFrom).getTime() : (new Date().getTime() - 30 * 86400000);
-        // Mặc định là bây giờ (cộng thêm 1 ngày để bao gồm ngày 'to')
-        const end = dateTo ? new Date(dateTo).getTime() + 86400000 : (new Date().getTime() + 86400000);
-
+        const start = dateFrom ? new Date(dateFrom).getTime() : 0;
+        const end = dateTo ? new Date(dateTo).getTime() + 86400000 : Infinity;
         let ledger = []; // Sổ cái
 
         // Lọc "NHẬP" (IN)
@@ -119,15 +116,22 @@ export function initDashboardPage() {
         // Lọc "XUẤT" (OUT)
         allOrders.forEach(order => {
             const orderDate = new Date(order.date).getTime();
-            // Chỉ tính đơn hàng đã xử lý, đã giao
             const isSold = order.status === "Đang xử lý" || order.status === "Đã giao"; 
-            if (order.productId === productId && isSold && orderDate >= start && orderDate <= end) {
-                ledger.push({
-                    date: orderDate,
-                    type: "XUẤT",
-                    quantity: -order.quantity, // Số âm
-                    docId: order.id
-                });
+            
+            if (isSold && orderDate >= start && orderDate <= end) {
+                // Lặp qua các sản phẩm trong đơn hàng
+                if (order.products) { // Kiểm tra nếu có mảng products
+                    order.products.forEach(p => {
+                        if (p.productId == productId) { 
+                            ledger.push({
+                                date: orderDate,
+                                type: "XUẤT",
+                                quantity: -p.quantity, // Số âm
+                                docId: order.id
+                            });
+                        }
+                    });
+                }
             }
         });
         

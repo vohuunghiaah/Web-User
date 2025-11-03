@@ -1,7 +1,3 @@
-// Đảm bảo sản phẩm được load từ mockData.js
-if (!localStorage.getItem("products") && typeof allProduct !== "undefined") {
-  localStorage.setItem("products", JSON.stringify(allProduct));
-}
 // SPA Navigation System
 class SPARouter {
   constructor() {
@@ -267,12 +263,10 @@ function addToCart(name, price, image, quantity = 1) {
     (p) => p.name.trim().toLowerCase() === name.trim().toLowerCase()
   );
 
+  // === SỬA LỖI 1: MUA QUÁ SỐ LƯỢNG ===
   if (!productInStock) {
-    // ⚠️ CẢNH BÁO thay vì chặn hoàn toàn
-    console.warn(
-      `Sản phẩm "${name}" không tìm thấy trong kho, vẫn cho phép thêm vào giỏ.`
-    );
-    // Không return ở đây, cho phép tiếp tục
+    alert(`Lỗi: Không tìm thấy sản phẩm "${name}" trong kho!`);
+    return; // THÊM RETURN ĐỂ CHẶN
   } else {
     // Kiểm tra số lượng trong giỏ hiện tại
     const existing = cart.find((p) => p.name === name);
@@ -288,6 +282,7 @@ function addToCart(name, price, image, quantity = 1) {
       return;
     }
   }
+  // === KẾT THÚC SỬA LỖI 1 ===
 
   // Thêm vào giỏ hàng
   const existing = cart.find((p) => p.name === name);
@@ -452,7 +447,9 @@ function renderCheckout() {
     });
   }
 }
+
 // ================= Thanh toán =================
+// === SỬA LỖI 2: THAY THẾ TOÀN BỘ HÀM NÀY ===
 function checkoutOrder() {
   if (cart.length === 0) {
     alert("Giỏ hàng trống!");
@@ -478,68 +475,81 @@ function checkoutOrder() {
   let total =
     cart.reduce((sum, p) => sum + p.price * p.quantity, 0) + shippingFee;
 
-  // ====== 🆕 THÊM PHẦN NÀY: CẬP NHẬT TỒN KHO ======
+  // ====== BƯỚC 1: KIỂM TRA TỒN KHO (KHÔNG TRỪ) ======
   let products = JSON.parse(localStorage.getItem("products")) || [];
-  let stockWarnings = []; // Cảnh báo hết hàng
+  let stockWarnings = []; 
 
-  // Kiểm tra và trừ tồn kho
   cart.forEach((cartItem) => {
     const productIndex = products.findIndex((p) => p.name === cartItem.name);
 
     if (productIndex !== -1) {
       const product = products[productIndex];
-
-      // Kiểm tra đủ hàng không
       if (product.quantity < cartItem.quantity) {
         stockWarnings.push(
           `${product.name} chỉ còn ${product.quantity} sản phẩm!`
         );
-      } else {
-        // Trừ tồn kho
-        products[productIndex].quantity -= cartItem.quantity;
       }
+      // ĐÃ XÓA LOGIC TRỪ KHO (theo yêu cầu)
+    } else {
+        // SỬA LỖI: Phải chặn nếu không tìm thấy
+        stockWarnings.push(
+          `Không tìm thấy sản phẩm "${cartItem.name}" trong kho!`
+        );
     }
   });
 
-  // Nếu có cảnh báo hết hàng, không cho thanh toán
   if (stockWarnings.length > 0) {
     alert("Không thể thanh toán:\n" + stockWarnings.join("\n"));
     return;
   }
 
-  // Lưu lại tồn kho đã cập nhật
-  localStorage.setItem("products", JSON.stringify(products));
-  // ====== KẾT THÚC PHẦN THÊM ======
+  // ====== BƯỚC 2: TẠO DỮ LIỆU ĐƠN HÀNG ======
 
-  // Lưu đơn hàng
+  // Tạo mảng sản phẩm mới cho đơn hàng, có chứa ID
+  const productsForOrder = cart.map(cartItem => {
+    const productInStock = products.find(p => p.name === cartItem.name);
+    return {
+        ...cartItem, // name, price, image, quantity
+        productId: productInStock ? productInStock.id : null // Thêm ID
+    };
+  });
+
+  // Lưu đơn hàng (ĐÃ SỬA HOÀN CHỈNH)
   const order = {
-    date: new Date().toLocaleString(),
-    products: [...cart],
+    id: Date.now(),                     // THÊM ID ĐƠN HÀNG
+    date: new Date().toISOString(),     // SỬA ĐỊNH DẠNG NGÀY
+    products: productsForOrder,         // SỬA LOGIC (dùng mảng có ID)
     total,
+    user: name,                         // THÊM TÊN USER
+    status: "Mới đặt",                  // THÊM TRẠNG THÁI
     payMethod,
     address: { name, email, phone, address, ward, district, city },
   };
+
   orders.push(order);
   localStorage.setItem("orders", JSON.stringify(orders));
   alert("Đặt hàng thành công!");
 
-  // ===Hiển thị hóa đơn ===
+  // ====== BƯỚC 3: HIỂN THỊ HÓA ĐƠN ======
   const billProducts = document.querySelector(".bill-products");
   const billTotal = document.querySelector(".bill-total");
   const billPay = document.querySelector(".bill-pay");
   const dateEl = document.getElementById("date");
   const billAddress = document.querySelector(".bill-address");
+  
   billProducts.innerHTML = "";
-  order.products.forEach((item) => {
+  order.products.forEach((item) => { 
     const p = document.createElement("p");
     p.innerHTML = `<strong>${item.name}</strong> x ${item.quantity} - ${
       item.price * item.quantity
     } đ`;
     billProducts.appendChild(p);
   });
+
   billTotal.innerText = total + " đ";
   billPay.innerText = payMethod.toUpperCase();
-  dateEl.innerText = order.date;
+  // SỬA: Hiển thị ngày tháng đúng
+  dateEl.innerText = new Date(order.date).toLocaleString('vi-VN'); 
   billAddress.innerText = `${name}, ${address}, ${ward}, ${district}, ${city}, SĐT: ${phone}`;
 
   //  === Xóa giỏ hàng ===
@@ -549,6 +559,9 @@ function checkoutOrder() {
   renderCheckout();
   showPage("donmua-page");
 }
+// === KẾT THÚC SỬA LỖI 2 ===
+
+
 // ================= Hiển thị lịch sử đơn hàng =================
 function renderOrderHistory() {
   const tbody = document.getElementById("order-history");
@@ -564,14 +577,19 @@ function renderOrderHistory() {
   });
 }
 
+
 // Chuyển tới trang thanh toán
+// === SỬA LỖI 3: NÚT THANH TOÁN ===
 function goToCheckout() {
   if (window.getCart().length === 0) {
     alert("Giỏ hàng trống. Không thể tiếp tục thanh toán!");
     return; // Không chuyển trang
   }
+  // (Đã xóa dòng lỗi "stockWarnings.push" ở đây)
   showPage("thanhtoan-page");
 }
+// === KẾT THÚC SỬA LỖI 3 ===
+
 //  LOGIN & REGISTER
 
 // Chuyển qua lại giữa login/signup modal
@@ -613,7 +631,7 @@ function setupRegisterForm() {
     const name = form.querySelector("#signup-name").value.trim();
     const email = form.querySelector("#signup-email").value.trim();
     const password = form.querySelector("#signup-password").value.trim();
-    const confirm = form.querySelector("#signup-confirm-password").value.trim();
+    const confirm = form.querySelector("#signup-confirm").value.trim();
 
     if (!name || !email || !password)
       return alert("Vui lòng nhập đầy đủ thông tin!");
@@ -623,7 +641,15 @@ function setupRegisterForm() {
     if (users.some((u) => u.email === email))
       return alert("Email này đã được đăng ký!");
 
-    users.push({ name, email, password });
+    const newUser = {
+      id: Date.now(),
+      name: name,
+      email: email,
+      password: password,
+      role: "Khách hàng",
+      state: "On"
+    };
+    users.push(newUser);
     localStorage.setItem("users", JSON.stringify(users));
     alert("Đăng ký thành công! Vui lòng đăng nhập.");
 
@@ -668,7 +694,9 @@ function setupLoginForm() {
       (u) => u.email === email && u.password === password
     );
     if (!user) return alert("Sai email hoặc mật khẩu!");
-
+    if (user.state === "Off") {
+      return alert("Tài khoản của bạn đã bị khóa! Vui lòng liên hệ quản trị viên.");
+    }
     localStorage.setItem("loggedInUser", JSON.stringify(user));
     alert("Đăng nhập thành công!");
     closeAllModals();

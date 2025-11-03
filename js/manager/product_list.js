@@ -1,58 +1,9 @@
 
-import { products as initialProductData} from '../data/products.js';
-
 const getData = key => JSON.parse(localStorage.getItem(key));
 const setData = (key, val) => localStorage.setItem(key, JSON.stringify(val));
 
-function migrateProductData() {
-  console.log("Kiểm tra và nâng cấp dữ liệu sản phẩm...");
-  let products = getData("products");
-  if (!products || products.length === 0) {
-      // Nếu không có sản phẩm, nạp từ file data
-      if (initialProductData) {
-          setData("products", initialProductData);
-          products = initialProductData;
-          console.log("Nạp sản phẩm ban đầu.");
-      } else {
-          return;
-      }
-  }
 
-  const firstProduct = products[0];
-  let needsUpdate = false;
 
-  if (typeof firstProduct.price === 'string') {
-    needsUpdate = true;
-    console.warn("Phát hiện dữ liệu giá (string), đang nâng cấp...");
-  }
-  if (typeof firstProduct.lowStockThreshold === 'undefined') {
-    needsUpdate = true;
-    console.warn("Phát hiện thiếu (lowStockThreshold), đang nâng cấp...");
-  }
-
-  if (needsUpdate) {
-    products.forEach(p => {
-      // Chỉ nâng cấp nếu là string
-      if (typeof p.price === 'string') {
-        p.price = parseFloat(String(p.price).replace(/[.,VNĐ ]/g, '')) || 0;
-        p.quantity = parseInt(p.quantity, 10) || 0;
-        p.costPrice = p.costPrice || 0;
-        p.profitMargin = p.profitMargin || 0.2;
-      }
-      // Thêm trường mới nếu thiếu
-      if (typeof p.lowStockThreshold === 'undefined') {
-        p.lowStockThreshold = 10; // Mặc định là 10
-      }
-    });
-    setData("products", products);
-    console.log("NÂNG CẤP DỮ LIỆU THÀNH CÔNG!");
-  } else {
-    console.log("Dữ liệu đã ở phiên bản mới.");
-  }
-}
-
-// Chạy hàm này ngay lập tức
-migrateProductData();
 
 
 export function initProductPage(){

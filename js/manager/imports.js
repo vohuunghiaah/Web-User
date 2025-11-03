@@ -93,7 +93,7 @@ export function initImportPage() {
       
       item.innerHTML = `
         <div>#${slip.id}</div>
-        <div>${slip.date}</div>
+        <div>${new Date(slip.date).toLocaleDateString('vi-VN')}</div>
         <div style="color: ${isCompleted ? 'green' : 'orange'}; font-weight: bold;">
           ${slip.status}
         </div>
@@ -152,7 +152,7 @@ export function initImportPage() {
 
   // 5. Thêm sản phẩm vào phiếu tạm
   addToSlipBtn.onclick = () => {
-    const productId = document.getElementById('import-product-select').value;
+    const productId = parseInt(document.getElementById('import-product-select').value);
     const product = allProducts.find(p => p.id === productId);
     const quantity = parseInt(document.getElementById('import-quantity').value);
     const importPrice = document.getElementById('import-price').value;
@@ -192,7 +192,7 @@ export function initImportPage() {
 
     const slipData = {
       id: editIndex !== null ? currentSlips[editIndex].id : Date.now(),
-      date: new Date().toLocaleDateString('vi-VN'),
+      date: new Date().toISOString(),
       status: "Đang xử lý",
       products: tempProducts // Lưu mảng sản phẩm tạm
     };
