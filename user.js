@@ -472,19 +472,11 @@ function checkoutOrder() {
   const city = form.querySelector('input[placeholder="Tỉnh/Thành phố"]').value;
   const payMethod = form.querySelector('input[name="pay"]:checked').value;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 996c95e04ccdb6377c00ca9b2a16a29a9801021b
   if (!name || !email || !phone || !address || !ward || !district || !city) {
     alert("Vui lòng điền đầy đủ thông tin giao hàng trước khi thanh toán!");
     return;
   }
-<<<<<<< HEAD
 
-=======
->>>>>>> 996c95e04ccdb6377c00ca9b2a16a29a9801021b
-  // Tính tổng
   let total =
     cart.reduce((sum, p) => sum + p.price * p.quantity, 0) + shippingFee;
 
@@ -574,7 +566,7 @@ function renderOrderHistory() {
   });
 }
 
-// ================= Chuyển tới trang thanh toán =================
+// Chuyển tới trang thanh toán 
 function goToCheckout() {
   if (window.getCart().length === 0) {
     alert("Giỏ hàng trống. Không thể tiếp tục thanh toán!");
@@ -582,7 +574,7 @@ function goToCheckout() {
   }
   showPage("thanhtoan-page");
 }
-// ========================== LOGIN & REGISTER ==========================
+//  LOGIN & REGISTER 
 
 // Chuyển qua lại giữa login/signup modal
 function setupAuthFormToggle() {

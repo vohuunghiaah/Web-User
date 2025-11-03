@@ -2809,10 +2809,14 @@ form input[type="checkbox"]:checked + label {
   color: #ffd700;
 }
 
-
 /* Nút thanh toán */
 .btn-nav {
-  display: inline-block;
+  display: block; 
+  width: 200px; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem; 
+  text-align: center; 
   padding: 0.8rem 1.6rem;
   background: #ffd700;
   color: #000;
@@ -2820,7 +2824,6 @@ form input[type="checkbox"]:checked + label {
   text-decoration: none;
   cursor: pointer;
   font-weight: 500;
-  margin-top: 1rem;
   transition: 0.3s;
 }
 .btn-nav:hover {
