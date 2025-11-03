@@ -880,6 +880,7 @@ function setupAddToCartButton(product) {
   const addToCartBtn = document.getElementById("product-add-to-cart");
 
   if (!addToCartBtn) {
+    console.warn("Add to cart button not found");
     return; // Không tìm thấy nút
   }
 
@@ -907,6 +908,8 @@ function setupAddToCartButton(product) {
     // Gọi hàm addToCart với số lượng
     if (typeof addToCart === "function") {
       addToCart(productName, price, image, quantity);
+    } else {
+      console.error("addToCart function not found!");
     }
   });
 
@@ -914,12 +917,13 @@ function setupAddToCartButton(product) {
   setupBuyNowButton(product);
 }
 
-// Hàm thiết lập nút "Mua ngay"
+// ==== HÀM THIẾT LẬP NÚT MUA NGAY CHO SẢN PHẨM ====
 function setupBuyNowButton(product) {
   const buyNowBtn = document.querySelector(".products__show-right-buy-buy");
 
   // 1. Kiểm tra element DOM đầu tiên
   if (!buyNowBtn) {
+    console.warn("Buy now button not found");
     return;
   }
 
@@ -964,30 +968,35 @@ function setupBuyNowButton(product) {
     } else {
       // ĐÃ ĐĂNG NHẬP
 
-      // Lấy thông tin sản phẩm
-      const price = parseInt(product.currentPrice.replace(/[^\d]/g, ""));
-
-      // Xóa giỏ hàng hiện tại và thêm sản phẩm vào giỏ hàng mới
-      cart = [
-        {
-          name: product.name,
-          price: price,
-          image: product.imgSrc,
-          quantity: quantity,
-        },
-      ];
-      localStorage.setItem("cart", JSON.stringify(cart));
+      if (typeof window.setCart === "function") {
+        window.setCart([
+          {
+            name: product.name,
+            price: price,
+            image: product.imgSrc,
+            quantity: quantity,
+          },
+        ]);
+      } else {
+        // Fallback: trực tiếp gán
+        window.cart = [
+          {
+            name: product.name,
+            price: price,
+            image: product.imgSrc,
+            quantity: quantity,
+          },
+        ];
+        localStorage.setItem("cart", JSON.stringify(window.cart));
+      }
 
       // Mở modal giỏ hàng và hiển thị trang thanh toán
       if (window.router && typeof window.router.openModal === "function") {
         window.router.openModal("cart-modal");
-
-        // Cập nhật cart và checkout
-        renderCart();
-        renderCheckout();
-
         // Chuyển đến trang thanh toán
         setTimeout(() => {
+          renderCart();
+          renderCheckout();
           showPage("thanhtoan-page");
         }, 100);
       }
