@@ -2809,6 +2809,7 @@ form input[type="checkbox"]:checked + label {
   color: #ffd700;
 }
 
+
 /* Nút thanh toán */
 .btn-nav {
   display: inline-block;

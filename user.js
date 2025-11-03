@@ -421,7 +421,6 @@ document.querySelectorAll('input[name="pay"]').forEach((radio) => {
 });
 
 // ================= Thanh toán =================
-// ================= Thanh toán =================
 function checkoutOrder() {
   if (cart.length === 0) {
     alert("Giỏ hàng trống!");
@@ -438,6 +437,12 @@ function checkoutOrder() {
   const district = form.querySelector('input[placeholder="Quận/Huyện"]').value;
   const city = form.querySelector('input[placeholder="Tỉnh/Thành phố"]').value;
   const payMethod = form.querySelector('input[name="pay"]:checked').value;
+
+
+  if (!name || !email || !phone || !address || !ward || !district || !city) {
+    alert("Vui lòng điền đầy đủ thông tin giao hàng trước khi thanh toán!");
+    return;
+  }
 
   // Tính tổng
   let total =
