@@ -233,37 +233,56 @@ function showAddToCartSuccess(name) {
 
 // ================= Thêm sản phẩm vào giỏ =================
 function addToCart(name, price, image, quantity = 1) {
-  // Kiểm tra xem người dùng đã đăng nhập chưa
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
-
   if (!user) {
-    // Lưu thông tin sản phẩm để thêm sau khi đăng nhập
+    // Lưu sản phẩm tạm để thêm sau khi đăng nhập
     const pendingProduct = { name, price, image, quantity };
     localStorage.setItem("pendingCartItem", JSON.stringify(pendingProduct));
-
-    // Hiển thị thông báo và mở modal đăng nhập
     alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
-
-    // Mở modal đăng nhập
-    const router = window.spaRouter;
-    if (router && typeof router.openModal === "function") {
+    if (window.router && typeof window.router.openModal === "function") {
       router.openModal("login-modal");
     }
     return;
   }
 
-  // Nếu đã đăng nhập, thêm sản phẩm vào giỏ bình thường
-  const qty =
-    Number.isFinite(quantity) && quantity > 0 ? Math.floor(quantity) : 1;
+  // 🆕 THÊM: Kiểm tra tồn kho
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const productInStock = products.find((p) => p.name === name);
+
+  if (!productInStock) {
+    alert("Sản phẩm không tồn tại!");
+    return;
+  }
+
+  // Kiểm tra số lượng trong giỏ hiện tại
   const existing = cart.find((p) => p.name === name);
-  if (existing) existing.quantity += qty;
-  else cart.push({ name, price, image, quantity: qty });
+  const currentCartQty = existing ? existing.quantity : 0;
+  const requestedQty =
+    Number.isFinite(quantity) && quantity > 0 ? Math.floor(quantity) : 1;
+
+  // Tổng số lượng sau khi thêm
+  const totalQty = currentCartQty + requestedQty;
+
+  if (totalQty > productInStock.quantity) {
+    alert(
+      `Chỉ còn ${productInStock.quantity} sản phẩm "${name}" trong kho!\n(Giỏ hàng đã có ${currentCartQty})`
+    );
+    return;
+  }
+  // KẾT THÚC PHẦN KIỂM TRA
+
+  // Thêm vào giỏ hàng
+  if (existing) {
+    existing.quantity += requestedQty;
+  } else {
+    cart.push({ name, price, image, quantity: requestedQty });
+  }
+
   localStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
   renderCheckout();
   showAddToCartSuccess(name);
 }
-
 // ====== An toàn gán lại event handler (để tránh gán nhiều lần)========
 function safeReplaceHandler(el, event, handler) {
   if (!el) return;
@@ -402,6 +421,7 @@ document.querySelectorAll('input[name="pay"]').forEach((radio) => {
 });
 
 // ================= Thanh toán =================
+// ================= Thanh toán =================
 function checkoutOrder() {
   if (cart.length === 0) {
     alert("Giỏ hàng trống!");
@@ -422,6 +442,39 @@ function checkoutOrder() {
   // Tính tổng
   let total =
     cart.reduce((sum, p) => sum + p.price * p.quantity, 0) + shippingFee;
+
+  // ====== 🆕 THÊM PHẦN NÀY: CẬP NHẬT TỒN KHO ======
+  let products = JSON.parse(localStorage.getItem("products")) || [];
+  let stockWarnings = []; // Cảnh báo hết hàng
+
+  // Kiểm tra và trừ tồn kho
+  cart.forEach((cartItem) => {
+    const productIndex = products.findIndex((p) => p.name === cartItem.name);
+
+    if (productIndex !== -1) {
+      const product = products[productIndex];
+
+      // Kiểm tra đủ hàng không
+      if (product.quantity < cartItem.quantity) {
+        stockWarnings.push(
+          `${product.name} chỉ còn ${product.quantity} sản phẩm!`
+        );
+      } else {
+        // Trừ tồn kho
+        products[productIndex].quantity -= cartItem.quantity;
+      }
+    }
+  });
+
+  // Nếu có cảnh báo hết hàng, không cho thanh toán
+  if (stockWarnings.length > 0) {
+    alert("Không thể thanh toán:\n" + stockWarnings.join("\n"));
+    return;
+  }
+
+  // Lưu lại tồn kho đã cập nhật
+  localStorage.setItem("products", JSON.stringify(products));
+  // ====== KẾT THÚC PHẦN THÊM ======
 
   // Lưu đơn hàng
   const order = {
@@ -453,6 +506,7 @@ function checkoutOrder() {
   billPay.innerText = payMethod.toUpperCase();
   dateEl.innerText = order.date;
   billAddress.innerText = `${name}, ${address}, ${ward}, ${district}, ${city}, SĐT: ${phone}`;
+
   //  === Xóa giỏ hàng ===
   cart = [];
   localStorage.removeItem("cart");
@@ -460,7 +514,6 @@ function checkoutOrder() {
   renderCheckout();
   showPage("donmua-page");
 }
-
 // ================= Hiển thị lịch sử đơn hàng =================
 function renderOrderHistory() {
   const tbody = document.getElementById("order-history");

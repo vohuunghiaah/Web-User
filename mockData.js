@@ -10,6 +10,10 @@ const allProduct = [
     price: 3220000,
     priceDiscountText: "Giảm 280.000đ",
     link: "./product-details.html?id=1",
+    quantity: 100,           // Tồn kho ban đầu
+    lowStockThreshold: 10,   // Ngưỡng cảnh báo
+    brand: "SteelSeries",    // Thương hiệu
+    status: "Đang bán"       // Trạng thái
   },
   {
     id: 2,
