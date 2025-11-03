@@ -881,6 +881,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // renderCart();
   // renderCheckout();
 
+  const backBtn = document.getElementById("back-to-shop");
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      if (typeof showView === "function") showView("view-products");
+      if (window.router && typeof window.router.closeModal === "function") {
+        window.router.closeModal();
+      }
+    });
+  }
+
   // 3) Khởi tạo auth (login/register/profile/logout)
   setupAuthFormToggle();
   setupRegisterForm();
@@ -977,3 +987,4 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addToCart = addToCart;
 window.showPage = showPage;
 window.goToCheckout = goToCheckout;
+window.checkoutOrder = checkoutOrder;
